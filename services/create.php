@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize inputs
     $name = trim($_POST['name'] ?? '');
     $slug = trim($_POST['slug'] ?? '');
-    $parent_id = !empty($_POST['parent_id']) ? (int)$_POST['parent_id'] : null; 
+    $parent_id = !empty($_POST['parent_id']) ? (int)$_POST['parent_id'] : 0; 
     $status = isset($_POST['status']) ? 1 : 0;
     $sort_order = (int)($_POST['sort_order'] ?? 0);
     
@@ -270,10 +270,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             
                             <div class="mt-4">
-                                <button type="submit" class="btn border-0 btn-primary" style="background-color: #b88a2e; ">
+                                <button type="submit" class="btn border-0 btn-primary" style="background-color: #b88a2e;">
                                     <i class="bi bi-plus-circle"></i> Create Service
                                 </button>
-                                <button type="reset" class="btn border-0 btn-secondary" style="background-color: #b88a2e; ">
+                                <button type="reset" class="btn border-0 btn-secondary" style="background-color: #b88a2e; border-radius: 20px; font-size: large; ">
                                     <i class="bi bi-arrow-clockwise"></i> Reset
                                 </button>
                             </div>

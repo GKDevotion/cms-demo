@@ -375,16 +375,16 @@
                                  <button type="submit" class="btn btn-primary">
                                      <i class="bi bi-check-circle"></i> Update Service
                                  </button>
-                                 <button type="reset" class="btn btn-secondary">
+                                 <button type="reset" class="btn btn-secondary border-0" style="background-color: #b88a2e; border-radius: 20px; font-size: large; ">
                                      <i class="bi bi-arrow-clockwise"></i> Reset Changes
                                  </button>
-                                 <a href="index.php" class="btn btn-outline-danger">
+                                 <a href="index.php" class="btn btn-outline-danger border-0 text-white" style="background-color: #b88a2e;  border-radius: 20px; font-size: large; ">
                                      <i class="bi bi-x-circle"></i> Cancel
                                  </a>
 
                                  <!-- Quick Actions -->
                                  <div class="btn-group float-end">
-                                     <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown">
+                                     <button type="button" class="btn  text-white dropdown-toggle" data-bs-toggle="dropdown" style="background-color: #b88a2e; border-radius: 20px; font-size: large; ">
                                          <i class="bi bi-lightning"></i> Quick Actions
                                      </button>
                                      <ul class="dropdown-menu">
