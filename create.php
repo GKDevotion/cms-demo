@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * Create Client - Page to create new client
+ */
+
+require_once 'config/Database.php';
+require_once 'classes/Client.php';
+
+$page_title = 'Add Client';
+$errors = [];
+$client = null;
+$is_edit = false;
+
+// Get database connection
+$client_obj = new Client($conn);
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = [
+        'first_name' => trim($_POST['first_name'] ?? ''),
+        'second_name' => trim($_POST['second_name'] ?? ''),
+        'last_name' => trim($_POST['last_name'] ?? ''),
+        'email' => trim($_POST['email'] ?? ''),
+        'mobile_number' => trim($_POST['mobile_number'] ?? ''),
+        'designation' => trim($_POST['designation'] ?? ''),
+        'status' => $_POST['status'] ?? 1
+    ];
+
+    // Validate data
+    $errors = $client_obj->validateClient($data);
+
+    // If no errors, insert data
+   if (empty($errors)) {
+
+    $client_id = $client_obj->create($data);
+
+    if ($client_id) {
+
+        // Companies
+        $selected_companies = $_POST['companies'] ?? [];
+        $client_obj->addCompanies($client_id, $selected_companies);
+
+        // Services
+        $selected_services = $_POST['company_services'] ?? [];
+        $client_obj->addServices($client_id, $selected_services);
+
+        header("Location: index.php?success=1");
+        exit;
+    } else {
+        $errors[] = "Error creating client. Please try again.";
+    }
+}
+
+}
+
+// Fetch all active companies
+$companies = $client_obj->getActiveCompanies();
+$client_companies = [];
+
+// Fetch all active company_services
+$company_services = $client_obj->getActiveServices();
+$client_services = [];
+
+require_once 'views/header.php';
+?>
+
+
+<div class="container-narrow">
+    <?php require_once 'views/form.php'; ?>
+</div>
+
+<?php require_once 'views/footer.php'; ?>
