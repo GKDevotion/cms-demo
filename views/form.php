@@ -112,6 +112,11 @@
                         </select>
                     </div>
 
+                    <button type="submit" class="btn btn-primary  " style="width:100%; background-color: #b88a2e; border: 1px solid #b88a2e;">
+                        <?php echo $is_edit ? 'Update Client' : 'Save Client'; ?>
+                    </button>
+                     <a href="index.php" class="back mt-2">← Back to Clients</a>
+
                 </div>
 
             </div>
@@ -126,7 +131,7 @@
                         <?php if (!empty($company_services)): ?>
                             <?php foreach ($company_services as $index => $parent): ?>
 
-                                <div class="accordion-item mb-2">
+                                <div class="accordion-item">
                                     <h2 class="accordion-header" id="heading<?= $parent['id']; ?>">
                                         <button class="accordion-button collapsed fw-bold"
                                             type="button"
@@ -153,9 +158,11 @@
                                                                 type="checkbox"
                                                                 name="company_services[]"
                                                                 value="<?= $child['id']; ?>"
-                                                                id="service<?= $child['id']; ?>">
+                                                                id="service<?= $child['id']; ?>"
+                                                                 <?= isset($client_services[$child['id']]) ? 'checked' : ''; ?>
+                                                                >
 
-                                                            <label class="form-check-label" for="service<?= $child['id']; ?>" style="margin-top: 0px; margin-left:12px;">
+                                                            <label class="form-check-label" for="service<?= $child['id']; ?>" style="margin-top: 0px; margin-left:12px; font-size: 14px;">
                                                                 <?= htmlspecialchars($child['name']); ?>
                                                             </label>
                                                         </div>
@@ -181,14 +188,10 @@
             </div>
 
         </div>
-
-        <button type="submit" class="btn btn-primary  " style="width:100%; background-color: #b88a2e; border: 1px solid #b88a2e;">
-            <?php echo $is_edit ? 'Update Client' : 'Save Client'; ?>
-        </button>
-
+ 
     </form>
 
-    <a href="index.php" class="back ">← Back to Clients</a>
+   
 </div>
 <style>
     /* Make sure cards fill their columns */
@@ -203,8 +206,8 @@
 
     /* Change checkbox color */
     .form-check-input {
-        width: 18px;
-        height: 18px;
+        width: 14px;
+        height: 14px;
         border: 2px solid #b88a2e;
     }
 
