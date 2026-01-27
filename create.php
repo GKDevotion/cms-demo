@@ -31,27 +31,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = $client_obj->validateClient($data);
 
     // If no errors, insert data
-   if (empty($errors)) {
+    if (empty($errors)) {
 
-    $client_id = $client_obj->create($data);
+        $client_id = $client_obj->create($data);
 
-    if ($client_id) {
+        if ($client_id) {
 
-        // Companies
-        $selected_companies = $_POST['companies'] ?? [];
-        $client_obj->addCompanies($client_id, $selected_companies);
+            // Companies
+            $selected_companies = $_POST['companies'] ?? [];
+            $client_obj->addCompanies($client_id, $selected_companies);
 
-        // Services
-        $selected_services = $_POST['company_services'] ?? [];
-        $client_obj->addServices($client_id, $selected_services);
+            // Services
+            $selected_services = $_POST['company_services'] ?? [];
+            $client_obj->addServices($client_id, $selected_services);
 
-        header("Location: index.php?success=1");
-        exit;
-    } else {
-        $errors[] = "Error creating client. Please try again.";
+            header("Location: index.php?success=1");
+            exit;
+        } else {
+            $errors[] = "Error creating client. Please try again.";
+        }
     }
-}
-
 }
 
 // Fetch all active companies
@@ -59,8 +58,29 @@ $companies = $client_obj->getActiveCompanies();
 $client_companies = [];
 
 // Fetch all active company_services
-$company_services = $client_obj->getActiveServices();
+$services = $client_obj->getActiveServices();
+
+$serviceMap = [];
+$company_services = [];
+
+/* First pass: map */
+foreach ($services as $service) {
+    $service['children'] = [];
+    $serviceMap[$service['id']] = $service;
+}
+
+/* Second pass: build tree */
+foreach ($serviceMap as $id => &$service) {
+    if (!empty($service['parent_id']) && isset($serviceMap[$service['parent_id']])) {
+        $serviceMap[$service['parent_id']]['children'][] = &$service;
+    } else {
+        $company_services[] = &$service;
+    }
+}
+unset($service);
+
 $client_services = [];
+
 
 require_once 'views/header.php';
 ?>

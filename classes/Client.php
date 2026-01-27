@@ -298,13 +298,19 @@ class Client
     public function getActiveServices()
     {
         $result = $this->conn->query("
-            SELECT id, name 
-            FROM company_services 
-            WHERE status = 1
-            ORDER BY name ASC
-        ");
+        SELECT id, name, parent_id
+        FROM company_services
+        WHERE status = 1
+        ORDER BY 
+            CASE WHEN parent_id IS NULL THEN 0 ELSE 1 END,
+            parent_id ASC,
+            id ASC
+    ");
+
         return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
     }
+
+
 
     /**
      * Get all active companies
@@ -327,10 +333,10 @@ class Client
         return $success;
     }
 
-      /**
+    /**
      * Remove all services mappings for a client
      */
-      public function removeServices($client_id)
+    public function removeServices($client_id)
     {
         $stmt = $this->conn->prepare("DELETE FROM client_service_map WHERE client_id = ?");
         $stmt->bind_param("i", $client_id);
@@ -358,22 +364,22 @@ class Client
         return $company_ids;
     }
 
-     /**
-     * Get services associated with a client
-     */
     public function getClientServices($client_id)
-    {
-        $stmt = $this->conn->prepare("
-            SELECT service_id FROM client_service_map WHERE client_id = ?
-        ");
-        $stmt->bind_param("i", $client_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $company_ids = [];
-        while ($row = $result->fetch_assoc()) {
-            $company_ids[] = $row['service_id'];
-        }
-        $stmt->close();
-        return $company_ids;
+{
+    $stmt = $this->conn->prepare("
+        SELECT service_id FROM client_service_map WHERE client_id = ?
+    ");
+    $stmt->bind_param("i", $client_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $service_ids = [];
+    while ($row = $result->fetch_assoc()) {
+        $service_ids[$row['service_id']] = true;   // make lookup faster
     }
+
+    $stmt->close();
+    return $service_ids;
+}
+
 }
