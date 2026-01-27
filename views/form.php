@@ -110,7 +110,7 @@
                             <div class="service-parent mb-2">
 
                                 <label class="parent-service d-block fw-bold" style="color: #b88a2e;">
-                                    <?= htmlspecialchars($parent['name']); ?>
+                                    <i class="bi bi-arrow-down-right-circle icon-space"></i><?= htmlspecialchars($parent['name']); ?>
                                 </label>
                                 <style>
                                     .child-checkbox {
@@ -127,6 +127,10 @@
                                         display: grid;
                                         grid-template-columns: repeat(4, 1fr);
                                         gap: 15px;
+                                    }
+
+                                    .icon-space {
+                                        margin-right: 8px;
                                     }
                                 </style>
                                 <?php if (!empty($parent['children'])): ?>
