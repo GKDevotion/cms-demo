@@ -11,26 +11,30 @@
  * - $is_edit: Boolean flag indicating if this is an edit form
  */
 
-?> 
+?>
 
-    <h2><?php echo $is_edit ? 'Edit Client' : 'Add New Client'; ?></h2>
+<div class="container-fluid mt-4">
+<h2><?php echo $is_edit ? 'Edit Client' : 'Add New Client'; ?></h2>
 
-    <?php if (!empty($errors)): ?>
-        <div class="error-box">
-            <strong>Please fix the following errors:</strong>
-            <ul>
-                <?php foreach ($errors as $error): ?>
-                    <li><?php echo htmlspecialchars($error); ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php endif; ?>
+<?php if (!empty($errors)): ?>
+    <div class="error-box">
+        <strong>Please fix the following errors:</strong>
+        <ul>
+            <?php foreach ($errors as $error): ?>
+                <li><?php echo htmlspecialchars($error); ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
 
-    <form method="POST">
+<form method="POST">
 
-        <div class="row">
-            <!-- LEFT COLUMN (col-6) -->
-            <div class="col-md-6">
+    <div class="row g-4">
+
+        <!-- LEFT COLUMN (col-6) -->
+        <div class="col-md-6">
+
+            <div class="card custom-card">
 
                 <div class="form-row mb-3">
                     <label>First Name <span class="required">*</span></label>
@@ -91,16 +95,17 @@
                         <?php else: ?>
                             <option disabled>No companies available</option>
                         <?php endif; ?>
-                    </select>
-
-
+                    </select> 
                 </div>
                 <div class="form-hint ">Hold Ctrl/Cmd to select multiple companies</div>
-            </div> 
 
-            <!-- RIGHT COLUMN (col-6) -->
-            <div class="col-md-6">
+            </div>
 
+        </div>
+
+        <!-- RIGHT COLUMN (col-6) -->
+        <div class="col-md-6">
+            <div class="card custom-card">
                 <label>Services<span class="required">*</span></label>
                 <div class="services-hierarchy form-row">
                     <?php if (!empty($company_services)): ?>
@@ -153,35 +158,71 @@
                         <p>No services available.</p>
                     <?php endif; ?>
                 </div>
-
-                <div class="form-row mt-4" style="    margin-top: 15px; margin-bottom: 15px;">
-                    <label>Status <span class="required">*</span></label>
-                    <select name="status" required class="form-control">
-                        <option value="1" <?php echo ($_POST['status'] ?? ($client['status'] ?? 1)) == 1 ? 'selected' : ''; ?>>Active</option>
-                        <option value="0" <?php echo ($_POST['status'] ?? ($client['status'] ?? 1)) == 0 ? 'selected' : ''; ?>>Inactive</option>
-                    </select>
-                </div>
-
+            </div>
+            
+            <div class="form-row mt-4" style="    margin-top: 15px; margin-bottom: 15px;">
+                <label>Status <span class="required">*</span></label>
+                <select name="status" required class="form-control">
+                    <option value="1" <?php echo ($_POST['status'] ?? ($client['status'] ?? 1)) == 1 ? 'selected' : ''; ?>>Active</option>
+                    <option value="0" <?php echo ($_POST['status'] ?? ($client['status'] ?? 1)) == 0 ? 'selected' : ''; ?>>Inactive</option>
+                </select>
             </div>
 
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3" style="width:100%;">
-            <?php echo $is_edit ? 'Update Client' : 'Save Client'; ?>
-        </button>
+    </div>
 
-    </form>
+    <button type="submit" class="btn btn-primary  " style="width:100%;">
+        <?php echo $is_edit ? 'Update Client' : 'Save Client'; ?>
+    </button>
 
-    <a href="index.php" class="back ">← Back to Clients</a>
+</form>
 
-    <script>
-        document.querySelectorAll('.child-checkbox').forEach(child => {
-            child.addEventListener('change', function() {
-                const parent = document.querySelector(
-                    '.parent-checkbox[value="' + this.dataset.parent + '"]'
-                );
-                if (this.checked) parent.checked = true;
-            });
-        });
-    </script>
+<a href="index.php" class="back ">← Back to Clients</a>
+</div>
+<style>
+    
+    /* Make sure cards fill their columns */
+    .custom-card {
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+        border: 1px solid #e5e5e5;
+        padding: 30px;
+    
+        margin-bottom: 20px;
+    }
+    
+    /* Ensure the form row columns work properly */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+    
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    
+    /* Fix for mobile responsiveness */
+    @media (max-width: 768px) {
+        .col-md-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
  
+</style>
+<script>
+    document.querySelectorAll('.child-checkbox').forEach(child => {
+        child.addEventListener('change', function() {
+            const parent = document.querySelector(
+                '.parent-checkbox[value="' + this.dataset.parent + '"]'
+            );
+            if (this.checked) parent.checked = true;
+        });
+    });
+</script>

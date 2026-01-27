@@ -261,13 +261,14 @@ class Client
         if (empty($company_ids)) return true;
 
         $stmt = $this->conn->prepare("
-            INSERT INTO client_company_map (client_id, company_id)
-            VALUES (?, ?)
+            INSERT INTO client_company_map (client_id, company_id , status)
+            VALUES (?, ?, ?)
         ");
 
         foreach ($company_ids as $company_id) {
             $company_id = intval($company_id);
-            $stmt->bind_param("ii", $client_id, $company_id);
+            $status = 1;   // or 0 based on requirement
+            $stmt->bind_param("iii", $client_id, $company_id, $status);
             $stmt->execute();
         }
         $stmt->close();
@@ -275,20 +276,21 @@ class Client
     }
 
     /**
-     * Add multiple companies
+     * Add multiple Services
      */
     public function addServices($client_id, $service_ids)
     {
         if (empty($service_ids)) return true;
 
         $stmt = $this->conn->prepare("
-            INSERT INTO client_service_map (client_id, service_id)
-            VALUES (?, ?)
+            INSERT INTO client_service_map (client_id, service_id, status)
+            VALUES (?, ?, ?)
         ");
 
         foreach ($service_ids as $service_id) {
             $service_id = intval($service_id);
-            $stmt->bind_param("ii", $client_id, $service_id);
+            $status = 1;   // or 0 based on requirement
+            $stmt->bind_param("iii", $client_id, $service_id, $status);
             $stmt->execute();
         }
         $stmt->close();
