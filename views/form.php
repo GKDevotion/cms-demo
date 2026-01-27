@@ -11,9 +11,8 @@
  * - $is_edit: Boolean flag indicating if this is an edit form
  */
 
-?>
+?> 
 
-<div class="container-narrow">
     <h2><?php echo $is_edit ? 'Edit Client' : 'Add New Client'; ?></h2>
 
     <?php if (!empty($errors)): ?>
@@ -97,8 +96,7 @@
 
                 </div>
                 <div class="form-hint ">Hold Ctrl/Cmd to select multiple companies</div>
-            </div>
-
+            </div> 
 
             <!-- RIGHT COLUMN (col-6) -->
             <div class="col-md-6">
@@ -186,5 +184,4 @@
             });
         });
     </script>
-
-</div>
+ 
