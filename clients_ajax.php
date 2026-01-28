@@ -1,4 +1,5 @@
 <?php
+
 /**
  * AJAX Handler for Client Operations
  */
@@ -24,8 +25,19 @@ if ($action === 'fetch') {
 
     if (!empty($clients)) {
         foreach ($clients as $row) {
+
+            $titleMap = [
+                0 => 'Mr',
+                1 => 'Mrs',
+                2 => 'Miss',
+                3 => 'Master'
+            ];
+
+         
+            $title = $titleMap[(int)$row['title']] ?? '';
+
             $fullName = htmlspecialchars(
-                $row['first_name'] . ' ' . $row['second_name'] . ' ' . $row['last_name']
+                trim($title . ' ' . $row['first_name'] . ' ' . $row['second_name'] . ' ' . $row['last_name'])
             );
 
             $statusText = $row['status'] == 1
@@ -38,6 +50,10 @@ if ($action === 'fetch') {
                 <td>{$fullName}</td>
                 <td>{$row['email']}</td>
                 <td>{$row['mobile1']}</td>
+                <td>{$row['mobile2']}</td> 
+                <td>{$row['company_name']}</td>
+                <td>{$row['company_type']}</td>
+                <td>{$row['company_website']}</td>
                 <td>{$row['designation']}</td>
                 <td>
                     <span onclick='toggleStatus({$row['id']})' style='cursor:pointer'>
@@ -62,7 +78,7 @@ if ($action === 'fetch') {
     }
 
     // Pagination
-    echo "<tr><td colspan='7' class='text-center'>";
+    echo "<tr><td colspan='12' class='text-center'>";
     echo "<div class='custom-pagination'>";
 
     $maxLinks = 5;
@@ -98,7 +114,7 @@ if ($action === 'fetch') {
 if ($action === 'search') {
     $query = $_POST['query'] ?? '';
     $query = trim($query);
-    
+
     if (empty($query)) {
         // Return to normal listing
         $data = $client->getPaginated(1, 10);
@@ -112,6 +128,11 @@ if ($action === 'search') {
             WHERE CONCAT(clients.first_name, ' ', clients.second_name, ' ', clients.last_name) LIKE ? 
             OR clients.email LIKE ? 
             OR clients.mobile1 LIKE ? 
+            OR clients.mobile2 LIKE ? 
+            OR clients.landline LIKE ? 
+            OR clients.company_name LIKE ? 
+            OR clients.company_type LIKE ?  
+            OR clients.company_website LIKE ? 
             OR clients.designation LIKE ? 
             OR comp.company_name LIKE ? 
             ORDER BY clients.id DESC";
@@ -141,6 +162,10 @@ if ($action === 'search') {
                 <td>{$fullName}</td>
                 <td>{$row['email']}</td>
                 <td>{$row['mobile1']}</td>
+                <td>{$row['mobile2']}</td> 
+                <td>{$row['company_name']}</td>
+                <td>{$row['company_type']}</td>
+                <td>{$row['company_website']}</td>
                 <td>{$row['designation']}</td>
                 <td>
                     <span onclick='toggleStatus({$row['id']})' style='cursor:pointer'>
@@ -186,4 +211,3 @@ if ($action === 'status') {
 }
 
 $conn->close();
-?>

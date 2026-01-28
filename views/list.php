@@ -29,10 +29,14 @@ $clientData = $client->getPaginated($page, 10);
     <table>
         <thead>
             <tr>
-                <th>Sr</th>
+                <th>Sr</th> 
                 <th>Name</th>
                 <th>Email</th>
-                <th>Mobile</th>
+                <th>Mobile1</th>
+                <th>Mobile2</th> 
+                <th>Company Name</th>
+                <th>Company Type</th>
+                <th>Company Website</th>
                 <th>Designation</th>
                 <th>Status</th>
                 <th>Action</th>

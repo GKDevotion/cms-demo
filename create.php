@@ -18,14 +18,33 @@ $client_obj = new Client($conn);
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
+        'title' =>  trim($_POST['title'] ?? ''),
         'first_name' => trim($_POST['first_name'] ?? ''),
         'second_name' => trim($_POST['second_name'] ?? ''),
         'last_name' => trim($_POST['last_name'] ?? ''),
         'email' => trim($_POST['email'] ?? ''),
         'mobile1' => trim($_POST['mobile1'] ?? ''),
+        'mobile2' => trim($_POST['mobile2'] ?? ''),
+        'landline' => trim($_POST['landline'] ?? ''),
+        'company_name' => trim($_POST['company_name'] ?? ''),
+        'company_type' => trim($_POST['company_type'] ?? ''),
+        'company_website' => trim($_POST['company_website'] ?? ''),
         'designation' => trim($_POST['designation'] ?? ''),
         'status' => $_POST['status'] ?? 1
     ];
+
+
+    /* ADDRESS DATA */
+    $addressData = [
+        'address_type' => $_POST['address_type'],
+        'address' => $_POST['address'],
+        'city' => $_POST['city'],
+        'state' => $_POST['state'],
+        'country' => $_POST['country'],
+        'pincode' => $_POST['pincode'],
+        'country_code' => $_POST['country_code']
+    ];
+
 
     // Validate data
     $errors = $client_obj->validateClient($data);
@@ -36,6 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $client_id = $client_obj->create($data);
 
         if ($client_id) {
+
+            // Save address
+            $client_obj->addAddress($client_id, $addressData);
 
             // Companies
             $selected_companies = $_POST['companies'] ?? [];

@@ -140,17 +140,23 @@ class Client
     public function create($data)
     {
         $stmt = $this->conn->prepare("
-            INSERT INTO clients (first_name, second_name, last_name, email, mobile1, designation, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO clients (title, first_name, second_name, last_name, email, mobile1, mobile2 , landline ,  company_name, company_type, company_website,  designation, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         $stmt->bind_param(
-            "ssssssi",
+            "ssssssssssssi",
+            $data['title'],
             $data['first_name'],
             $data['second_name'],
             $data['last_name'],
             $data['email'],
             $data['mobile1'],
+            $data['mobile2'],
+            $data['landline'],
+            $data['company_name'],
+            $data['company_type'],
+            $data['company_website'],
             $data['designation'],
             $data['status']
         );
@@ -172,18 +178,24 @@ class Client
     {
         $stmt = $this->conn->prepare("
             UPDATE clients 
-            SET first_name = ?, second_name = ?, last_name = ?, 
-                email = ?, mobile1 = ?, designation = ?, status = ?
+            SET title = ?, first_name = ?, second_name = ?, last_name = ?, 
+                email = ?, mobile1 = ?, mobile2 = ?, landline = ?,    company_name = ?, company_type = ?, company_website = ? ,designation = ?, status = ?
             WHERE id = ?
         ");
 
         $stmt->bind_param(
-            "ssssssii",
+            "ssssssssssssii",
+            $data['title'],
             $data['first_name'],
             $data['second_name'],
             $data['last_name'],
             $data['email'],
             $data['mobile1'],
+            $data['mobile2'],
+            $data['landline'],
+            $data['company_name'],
+            $data['company_type'],
+            $data['company_website'],
             $data['designation'],
             $data['status'],
             $id
@@ -237,6 +249,74 @@ class Client
             'offset' => $offset
         ];
     }
+
+    public function addAddress($client_id, $data)
+    {
+        $stmt = $this->conn->prepare("
+        INSERT INTO client_addresses 
+        (client_id, address_type, address, city, state, country, pincode, country_code)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ");
+
+        $stmt->bind_param(
+            "iissssss",
+            $client_id,
+            $data['address_type'],
+            $data['address'],
+            $data['city'],
+            $data['state'],
+            $data['country'],
+            $data['pincode'],
+            $data['country_code']
+        );
+
+        $success = $stmt->execute();
+        $stmt->close();
+        return $success;
+    }
+
+    public function getAddress($client_id)
+{
+    $stmt = $this->conn->prepare("
+        SELECT * FROM client_addresses
+        WHERE client_id = ?
+        LIMIT 1
+    ");
+    $stmt->bind_param("i", $client_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $address = $result->fetch_assoc();
+    $stmt->close();
+    return $address;
+}
+
+public function updateAddress($client_id, $data)
+{
+    $stmt = $this->conn->prepare("
+        UPDATE client_addresses
+        SET address = ?, city = ?, state = ?, country = ?, pincode = ?, country_code = ?
+        WHERE client_id = ? AND address_type = ?
+    ");
+
+    $stmt->bind_param(
+        "sssssiis",
+        $data['address'],
+        $data['city'],
+        $data['state'],
+        $data['country'],
+        $data['pincode'],
+        $data['country_code'],
+        $client_id,
+        $data['address_type']
+    );
+
+    $success = $stmt->execute();
+    $stmt->close();
+    return $success;
+}
+
+    
+
 
     /**
      * Add company to client
@@ -367,23 +447,22 @@ class Client
     }
 
     public function getClientServices($client_id)
-{
-    $stmt = $this->conn->prepare("
+    {
+        $stmt = $this->conn->prepare("
         SELECT service_id FROM client_service_map WHERE client_id = ?
     ");
-    $stmt->bind_param("i", $client_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
+        $stmt->bind_param("i", $client_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    $service_ids = [];
-  
-    while ($row = $result->fetch_assoc()) {
-    $service_ids[] = $row['service_id'];
-}
+        $service_ids = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $service_ids[] = $row['service_id'];
+        }
 
 
-    $stmt->close();
-    return $service_ids;
-}
-
+        $stmt->close();
+        return $service_ids;
+    }
 }
