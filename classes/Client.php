@@ -376,9 +376,11 @@ class Client
     $result = $stmt->get_result();
 
     $service_ids = [];
+  
     while ($row = $result->fetch_assoc()) {
-        $service_ids[$row['service_id']] = true;   // make lookup faster
-    }
+    $service_ids[] = $row['service_id'];
+}
+
 
     $stmt->close();
     return $service_ids;

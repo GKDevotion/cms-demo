@@ -159,7 +159,7 @@
                                                                 name="company_services[]"
                                                                 value="<?= $child['id']; ?>"
                                                                 id="service<?= $child['id']; ?>"
-                                                                 <?= isset($client_services[$child['id']]) ? 'checked' : ''; ?>
+                                                                <?= in_array($child['id'], $client_services) ? 'checked' : ''; ?> 
                                                                 >
 
                                                             <label class="form-check-label" for="service<?= $child['id']; ?>" style="margin-top: 0px; margin-left:12px; font-size: 14px;">
@@ -170,7 +170,6 @@
                                                 <?php endforeach; ?>
                                             </div>
                                         </div>
-
 
                                     </div>
                                 </div>

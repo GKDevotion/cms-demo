@@ -73,12 +73,14 @@ $companies = $client_obj->getActiveCompanies();
 // Get existing client companies
 $client_companies = $client_obj->getClientCompanies($id);
 
+$client_id = $id;
 // Fetch all active company_services
 $services = $client_obj->getActiveServices();
 
 /* ====== IMPORTANT ======
    Build the service tree exactly like create page
 ========================== */
+ 
 
 $serviceMap = [];
 $company_services = [];
@@ -90,7 +92,8 @@ foreach ($services as $service) {
 }
 
 /* Second pass: build tree */
-foreach ($serviceMap as $id => &$service) {
+foreach ($serviceMap as $serviceId => &$service) {
+
     if (!empty($service['parent_id']) && isset($serviceMap[$service['parent_id']])) {
         $serviceMap[$service['parent_id']]['children'][] = &$service;
     } else {
@@ -99,8 +102,8 @@ foreach ($serviceMap as $id => &$service) {
 }
 unset($service);
 
-/* Get existing client services */
-$client_services = $client_obj->getClientServices($id);
+/* Get existing client services */ 
+$client_services = $client_obj->getClientServices($client_id);
 
 
 require_once 'views/header.php';
