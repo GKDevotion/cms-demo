@@ -16,7 +16,27 @@
 
 
 <div class="container-fluid mt-4">
-    <h2><?php echo $is_edit ? 'Edit Client' : 'Add New Client'; ?></h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">
+            <?php echo $is_edit ? 'Edit Client' : 'Add New Client'; ?>
+        </h2>
+
+        <div class="d-flex align-items-center gap-3">
+            <a href="index.php"
+                class="btn"
+                style="background-color:#b88a2e; border:1px solid #b88a2e; color:#fff;">
+                ← Back to Clients
+            </a>
+
+            <button type="submit"
+                class="btn btn-primary"
+                style="background-color:#b88a2e; border:1px solid #b88a2e;">
+                <?php echo $is_edit ? 'Update Client' : 'Save Client'; ?>
+            </button>
+        </div>
+    </div>
+
+
 
     <?php if (!empty($errors)): ?>
         <div class="error-box">
@@ -115,7 +135,7 @@
                     <button type="submit" class="btn btn-primary  " style="width:100%; background-color: #b88a2e; border: 1px solid #b88a2e;">
                         <?php echo $is_edit ? 'Update Client' : 'Save Client'; ?>
                     </button>
-                     <a href="index.php" class="back mt-2">← Back to Clients</a>
+                    <a href="index.php" class="back mt-2">← Back to Clients</a>
 
                 </div>
 
@@ -159,8 +179,7 @@
                                                                 name="company_services[]"
                                                                 value="<?= $child['id']; ?>"
                                                                 id="service<?= $child['id']; ?>"
-                                                                <?= in_array($child['id'], $client_services) ? 'checked' : ''; ?> 
-                                                                >
+                                                                <?= in_array($child['id'], $client_services) ? 'checked' : ''; ?>>
 
                                                             <label class="form-check-label" for="service<?= $child['id']; ?>" style="margin-top: 0px; margin-left:12px; font-size: 14px;">
                                                                 <?= htmlspecialchars($child['name']); ?>
@@ -187,10 +206,10 @@
             </div>
 
         </div>
- 
+
     </form>
 
-   
+
 </div>
 <style>
     /* Make sure cards fill their columns */
