@@ -37,7 +37,7 @@ if ($action === 'fetch') {
                 <td>{$sr}</td>
                 <td>{$fullName}</td>
                 <td>{$row['email']}</td>
-                <td>{$row['mobile_number']}</td>
+                <td>{$row['mobile1']}</td>
                 <td>{$row['designation']}</td>
                 <td>
                     <span onclick='toggleStatus({$row['id']})' style='cursor:pointer'>
@@ -111,7 +111,7 @@ if ($action === 'search') {
             LEFT JOIN companies comp ON comp.id = ccm.company_id
             WHERE CONCAT(clients.first_name, ' ', clients.second_name, ' ', clients.last_name) LIKE ? 
             OR clients.email LIKE ? 
-            OR clients.mobile_number LIKE ? 
+            OR clients.mobile1 LIKE ? 
             OR clients.designation LIKE ? 
             OR comp.company_name LIKE ? 
             ORDER BY clients.id DESC";
@@ -140,7 +140,7 @@ if ($action === 'search') {
                 <td>{$sr}</td>
                 <td>{$fullName}</td>
                 <td>{$row['email']}</td>
-                <td>{$row['mobile_number']}</td>
+                <td>{$row['mobile1']}</td>
                 <td>{$row['designation']}</td>
                 <td>
                     <span onclick='toggleStatus({$row['id']})' style='cursor:pointer'>

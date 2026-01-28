@@ -53,12 +53,12 @@ class Client
         return $errors;
     }
 
-    public static function validateMobileNumber($mobile_number)
+    public static function validateMobileNumber($mobile1)
     {
         $errors = [];
-        if (empty($mobile_number)) {
+        if (empty($mobile1)) {
             $errors[] = "Mobile number is required.";
-        } elseif (!preg_match('/^[0-9\+\-\(\)\s]{10,20}$/', $mobile_number)) {
+        } elseif (!preg_match('/^[0-9\+\-\(\)\s]{10,20}$/', $mobile1)) {
             $errors[] = "Invalid mobile number format. Use digits, spaces, +, -, or () only.";
         }
         return $errors;
@@ -85,7 +85,7 @@ class Client
         $errors = array_merge($errors, self::validateFirstName($data['first_name']));
         $errors = array_merge($errors, self::validateLastName($data['last_name']));
         $errors = array_merge($errors, self::validateEmail($data['email']));
-        $errors = array_merge($errors, self::validateMobileNumber($data['mobile_number']));
+        $errors = array_merge($errors, self::validateMobileNumber($data['mobile1']));
         $errors = array_merge($errors, self::validateDesignation($data['designation']));
 
         // Check if email exists
@@ -140,7 +140,7 @@ class Client
     public function create($data)
     {
         $stmt = $this->conn->prepare("
-            INSERT INTO clients (first_name, second_name, last_name, email, mobile_number, designation, status)
+            INSERT INTO clients (first_name, second_name, last_name, email, mobile1, designation, status)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         ");
 
@@ -150,7 +150,7 @@ class Client
             $data['second_name'],
             $data['last_name'],
             $data['email'],
-            $data['mobile_number'],
+            $data['mobile1'],
             $data['designation'],
             $data['status']
         );
@@ -173,7 +173,7 @@ class Client
         $stmt = $this->conn->prepare("
             UPDATE clients 
             SET first_name = ?, second_name = ?, last_name = ?, 
-                email = ?, mobile_number = ?, designation = ?, status = ?
+                email = ?, mobile1 = ?, designation = ?, status = ?
             WHERE id = ?
         ");
 
@@ -183,7 +183,7 @@ class Client
             $data['second_name'],
             $data['last_name'],
             $data['email'],
-            $data['mobile_number'],
+            $data['mobile1'],
             $data['designation'],
             $data['status'],
             $id

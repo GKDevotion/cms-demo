@@ -88,8 +88,8 @@
                     </div>
 
                     <div class="mb-2">
-                        <label>Mobile Number <span class="required">*</span></label>
-                        <input type="text" name="mobile_number" placeholder="+91 1000010000"
+                        <label>Mobile 1 <span class="required">*</span></label>
+                        <input type="text" name="mobile1" placeholder="+91 1000010000"
                             value="<?php echo htmlspecialchars($_POST['mobile_number'] ?? ($client['mobile_number'] ?? '')); ?>"
                             required>
                     </div>
