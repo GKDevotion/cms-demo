@@ -191,7 +191,7 @@
                                 value="<?php echo htmlspecialchars($_POST['country_code'] ?? ($client_address['country_code'] ?? '')); ?>" required>
                         </div> -->
 
-                        
+
 
                         <!-- Permanent Address -->
                         <div class="address-block mt-2">
@@ -223,8 +223,18 @@
                             <h6>Current Address</h6>
                             <div class="row">
                                 <div class="col-md-3 mb-2">
-                                    <input type="text" name="address[current][address]" placeholder="Address" value="<?php echo htmlspecialchars($current['address'] ?? ''); ?>">
+                                    <input type="text" name="address[current][address]" id="current_address" placeholder="Address" value="<?php echo htmlspecialchars($current['address'] ?? ''); ?>">
+                             
+                                <div class="col-md-12 mb-2">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="copyCurrentFromPermanent">
+                                        <label class="form-check-label " for="copyCurrentFromPermanent" style="margin-top: 0%; margin-left: 10px;">
+                                            Same as Permanent Address
+                                        </label>
+                                    </div>
                                 </div>
+                             </div>
+
                                 <div class="col-md-3">
                                     <input type="text" name="address[current][city]" placeholder="City" value="<?php echo htmlspecialchars($current['city'] ?? ''); ?>">
                                 </div>
@@ -546,8 +556,6 @@
             if (this.checked) parent.checked = true;
         });
     });
-
-   
 </script>
 <script>
     document.getElementById('address_type').addEventListener('change', function() {
@@ -557,4 +565,17 @@
             document.getElementById(this.value + '_address').classList.remove('d-none');
         }
     });
+</script>
+
+<script>
+document.getElementById('copyCurrentFromPermanent').addEventListener('change', function() {
+    const checked = this.checked;
+    const permanentAddress = document.querySelector('input[name="address[permanent][address]"]').value;
+
+    if (checked) {
+        document.getElementById('current_address').value = permanentAddress;
+    } else {
+        document.getElementById('current_address').value = '';
+    }
+});
 </script>
