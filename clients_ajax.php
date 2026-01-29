@@ -33,7 +33,7 @@ if ($action === 'fetch') {
                 3 => 'Master'
             ];
 
-         
+
             $title = $titleMap[(int)$row['title']] ?? '';
 
             $fullName = htmlspecialchars(
@@ -124,7 +124,9 @@ if ($action === 'search') {
         $searchQuery = "%$query%";
         $sql = "SELECT DISTINCT clients.* FROM clients 
             LEFT JOIN client_company_map ccm ON ccm.client_id = clients.id
-            LEFT JOIN companies comp ON comp.id = ccm.company_id
+            LEFT JOIN companies comp ON comp.id = ccm.company_id 
+            LEFT JOIN client_addresses ca ON ca.client_id = clients.id
+
             WHERE CONCAT(clients.first_name, ' ', clients.second_name, ' ', clients.last_name) LIKE ? 
             OR clients.email LIKE ? 
             OR clients.mobile1 LIKE ? 
@@ -134,11 +136,18 @@ if ($action === 'search') {
             OR clients.company_type LIKE ?  
             OR clients.company_website LIKE ? 
             OR clients.designation LIKE ? 
+            OR clients.tax_no LIKE ? 
             OR comp.company_name LIKE ? 
+            OR ca.address LIKE ?
+            OR ca.city LIKE ?
+            OR ca.state LIKE ?
+            OR ca.country LIKE ?
+            OR ca.pincode LIKE ?
+
             ORDER BY clients.id DESC";
 
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssss", $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery);
+        $stmt->bind_param("ssssssssssssssss", $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery,$searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery);
         $stmt->execute();
         $result = $stmt->get_result();
         $clients = $result->fetch_all(MYSQLI_ASSOC);
