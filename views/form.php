@@ -59,6 +59,7 @@
                 <div class="card custom-card">
 
                     <div class="row mb-2">
+
                         <div class=" col-md-3">
                             <label>Title <span class="required">*</span></label>
                             <select name="title" class="form-select " required style="padding: 10px;">
@@ -123,9 +124,9 @@
                             <label>Address Type <span class="required">*</span></label>
                             <select name="address_type" class="form-select " required style="padding: 10px;">
                                 <option value="">Select Address</option>
-                                <option value="1" <?= isset($client['address_type']) && $client['address_type'] == 1 ? 'selected' : '' ?>>Company</option>
-                                <option value="2" <?= isset($client['address_type']) && $client['address_type'] == 2 ? 'selected' : '' ?>>Permanent</option>
-                                <option value="3" <?= isset($client['address_type']) && $client['address_type'] == 3 ? 'selected' : '' ?>>Current</option>
+                                <option value="1" <?= isset($client_address['address_type']) && $client_address['address_type'] == 1 ? 'selected' : '' ?>>Company</option>
+                                <option value="2" <?= isset($client_address['address_type']) && $client_address['address_type'] == 2 ? 'selected' : '' ?>>Permanent</option>
+                                <option value="3" <?= isset($client_address['address_type']) && $client_address['address_type'] == 3 ? 'selected' : '' ?>>Current</option>
 
                             </select>
                         </div>
@@ -134,49 +135,38 @@
                             <label>Address<span class="required">*</span></label>
                             <input type="text" id="address" name="address"
                                 placeholder="Enter Your Address"
-                                value="<?= htmlspecialchars($_POST['address'] ?? $address['address'] ?? '') ?>"
-                                required>
+                                value="<?= htmlspecialchars($_POST['address'] ?? ($client_address['address'] ?? '')) ?>" required>
                         </div>
- 
+
                         <div class="col-md-3">
                             <label>City <span class="required">*</span></label>
                             <input type="text" name="city" placeholder="Enter City Name"
-                               value="<?php echo htmlspecialchars($_POST['city'] ?? ($client_address['city'] ?? '')); ?>" required>
+                                value="<?php echo htmlspecialchars($_POST['city'] ?? ($client_address['city'] ?? '')); ?>" required>
                         </div>
 
                         <div class="col-md-3">
                             <label>State <span class="required">*</span></label>
                             <input type="text" name="state" placeholder="Enter State Name"
-                                value="<?php echo htmlspecialchars($_POST['state'] ?? ($client['state'] ?? '')); ?>"
-                                required>
+                                value="<?php echo htmlspecialchars($_POST['state'] ?? ($client_address['state'] ?? '')); ?>" required>
                         </div>
 
                         <div class="col-md-3">
                             <label>Country <span class="required">*</span></label>
                             <input type="text" name="country" placeholder="Enter Country Name"
-                                value="<?php echo htmlspecialchars($_POST['country'] ?? ($client['country'] ?? '')); ?>"
-                                required>
+                                value="<?php echo htmlspecialchars($_POST['country'] ?? ($client_address['country'] ?? '')); ?>" required>
                         </div>
 
                         <div class="col-md-3">
                             <label>Pincode <span class="required">*</span></label>
                             <input type="text" name="pincode" placeholder="Enter Pincode"
-                                value="<?php echo htmlspecialchars($_POST['pincode'] ?? ($client['pincode'] ?? '')); ?>"
-                                required>
+                                value="<?php echo htmlspecialchars($_POST['pincode'] ?? ($client_address['pincode'] ?? '')); ?>" required>
                         </div>
 
                         <div class="col-md-3">
                             <label>Country Code <span class="required">*</span></label>
                             <input type="text" name="country_code" placeholder="Enter Country Code"
-                                value="<?php echo htmlspecialchars($_POST['country_code'] ?? ($client['country_code'] ?? '')); ?>"
-                                required>
+                                value="<?php echo htmlspecialchars($_POST['country_code'] ?? ($client_address['country_code'] ?? '')); ?>" required>
                         </div>
-
-
-
-
-
-
 
                         <div class="col-md-3">
                             <label>Company Name <span class="required">*</span></label>
@@ -199,10 +189,40 @@
                                 required>
                         </div>
 
+                        <div class="col-md-3">
+                            <label>TRN Number <span class="required">*</span></label>
+                            <input type="text" name="trn_no" placeholder="Enter TRN Number"
+                                value="<?php echo htmlspecialchars($_POST['trn_no'] ?? ($client['trn_no'] ?? '')); ?>" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>TAX Number <span class="required">*</span></label>
+                            <input type="text" name="tax_no" placeholder="Enter TAX Number"
+                                value="<?php echo htmlspecialchars($_POST['tax_no'] ?? ($client['tax_no'] ?? '')); ?>" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>SMS Notification <span class="required">*</span></label>
+                            <select name="sms_notification" class="form-control form-select">
+                                <option value="1" <?= (($_POST['sms_notification'] ?? $client['sms_notification'] ?? '') == 1) ? 'selected' : '' ?>>Yes</option>
+                                <option value="0" <?= (($_POST['sms_notification'] ?? $client['sms_notification'] ?? '') == 0) ? 'selected' : '' ?>>No</option>
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <label>Email Notification <span class="required">*</span></label>
+                            <select name="email_notification" class="form-control form-select">
+                                <option value="1" <?= (($_POST['email_notification'] ?? $client['email_notification'] ?? '') == 1) ? 'selected' : '' ?>>Yes</option>
+                                <option value="0" <?= (($_POST['email_notification'] ?? $client['email_notification'] ?? '') == 0) ? 'selected' : '' ?>>No</option>
+                            </select>
+                        </div>
+
+
                     </div>
 
-                    <div class="row"> 
-                        
+                    <div class="row">
+
                         <div class="col-md-6">
                             <label>Email <span class="required">*</span></label>
                             <input type="email" name="email" placeholder="example@email.com"
@@ -246,9 +266,6 @@
                             <?php endif; ?>
                         </div>
                     </div>
-
-
-
 
                     <div class="" style="  margin-bottom: 15px;">
                         <label>Status <span class="required">*</span></label>

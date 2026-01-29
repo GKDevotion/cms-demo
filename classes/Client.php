@@ -140,12 +140,12 @@ class Client
     public function create($data)
     {
         $stmt = $this->conn->prepare("
-            INSERT INTO clients (title, first_name, second_name, last_name, email, mobile1, mobile2 , landline ,  company_name, company_type, company_website,  designation, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO clients (title, first_name, second_name, last_name, email, mobile1, mobile2 , landline ,  company_name, company_type, company_website,trn_no, tax_no, sms_notification, email_notification,  designation,  status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         $stmt->bind_param(
-            "ssssssssssssi",
+            "ssssssssssssssssi",
             $data['title'],
             $data['first_name'],
             $data['second_name'],
@@ -157,6 +157,10 @@ class Client
             $data['company_name'],
             $data['company_type'],
             $data['company_website'],
+            $data['trn_no'],
+            $data['tax_no'],
+            $data['sms_notification'],
+            $data['email_notification'],
             $data['designation'],
             $data['status']
         );
@@ -179,12 +183,12 @@ class Client
         $stmt = $this->conn->prepare("
             UPDATE clients 
             SET title = ?, first_name = ?, second_name = ?, last_name = ?, 
-                email = ?, mobile1 = ?, mobile2 = ?, landline = ?,    company_name = ?, company_type = ?, company_website = ? ,designation = ?, status = ?
+                email = ?, mobile1 = ?, mobile2 = ?, landline = ?,    company_name = ?, company_type = ?, company_website = ? ,  trn_no = ?, tax_no = ?, sms_notification = ?, email_notification = ?, designation = ?, status = ?
             WHERE id = ?
         ");
 
         $stmt->bind_param(
-            "ssssssssssssii",
+            "ssssssssssssssssii",
             $data['title'],
             $data['first_name'],
             $data['second_name'],
@@ -196,6 +200,10 @@ class Client
             $data['company_name'],
             $data['company_type'],
             $data['company_website'],
+            $data['trn_no'],
+            $data['tax_no'],
+            $data['sms_notification'],
+            $data['email_notification'],
             $data['designation'],
             $data['status'],
             $id

@@ -22,6 +22,9 @@ if (!$id || !is_numeric($id)) {
 // Get database connection
 $client_obj = new Client($conn);
 
+// Fetch client address (for edit display)
+$client_address = $client_obj->getAddress($id);
+
 // Fetch client data
 $client = $client_obj->getById($id);
 if (!$client) {
@@ -43,6 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'company_name' => trim($_POST['company_name'] ?? ''),
         'company_type' => trim($_POST['company_type'] ?? ''),
         'company_website' => trim($_POST['company_website'] ?? ''),
+        'trn_no' => trim($_POST['trn_no'] ?? ''),
+        'tax_no' => trim($_POST['tax_no'] ?? ''),
+        'sms_notification' => trim($_POST['sms_notification'] ?? ''),
+        'email_notification' => trim($_POST['email_notification'] ?? ''),
         'designation' => trim($_POST['designation'] ?? ''),
         'status' => $_POST['status'] ?? 1
     ];
@@ -66,10 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         if ($client_obj->update($id, $data)) {
 
-            // Get existing address for this client
-            $address = $client_obj->getAddress($id);
+ 
 
-            // 🔥 SAVE / UPDATE ADDRESS
             $existingAddress = $client_obj->getAddress($id);
 
             if ($existingAddress) {
@@ -77,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $client_obj->addAddress($id, $addressData);
             }
-
 
             // Update company mappings: remove existing and add selected
             $selected_companies = $_POST['companies'] ?? [];

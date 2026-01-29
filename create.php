@@ -29,6 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'company_name' => trim($_POST['company_name'] ?? ''),
         'company_type' => trim($_POST['company_type'] ?? ''),
         'company_website' => trim($_POST['company_website'] ?? ''),
+        'trn_no' => trim($_POST['trn_no'] ?? ''),
+        'tax_no' => trim($_POST['tax_no'] ?? ''),
+        'sms_notification' => trim($_POST['sms_notification'] ?? ''),
+        'email_notification' => trim($_POST['email_notification'] ?? ''),
         'designation' => trim($_POST['designation'] ?? ''),
         'status' => $_POST['status'] ?? 1
     ];
