@@ -74,8 +74,7 @@
                         <div class=" col-md-3">
                             <label>First Name <span class="required">*</span></label>
                             <input type="text" name="first_name" placeholder="Enter Your First Name"
-                                value="<?php echo htmlspecialchars($_POST['first_name'] ?? ($client['first_name'] ?? '')); ?>"
-                                required>
+                                value="<?php echo htmlspecialchars($_POST['first_name'] ?? ($client['first_name'] ?? '')); ?>">
                         </div>
 
                         <div class=" col-md-3 ">
@@ -105,31 +104,55 @@
                         <div class="col-md-3">
                             <label>Mobile 2 <span class="required">*</span></label>
                             <input type="text" name="mobile2" placeholder="+91 1000010000"
-                                value="<?php echo htmlspecialchars($_POST['mobile2'] ?? ($client['mobile2'] ?? '')); ?>"
-                                required>
+                                value="<?php echo htmlspecialchars($_POST['mobile2'] ?? ($client['mobile2'] ?? '')); ?>">
                         </div>
 
                         <div class="col-md-3">
                             <label>Landline <span class="required">*</span></label>
                             <input type="text" name="landline" placeholder="+91 1000010000"
-                                value="<?php echo htmlspecialchars($_POST['landline'] ?? ($client['landline'] ?? '')); ?>"
-                                required>
+                                value="<?php echo htmlspecialchars($_POST['landline'] ?? ($client['landline'] ?? '')); ?>">
                         </div>
 
                     </div>
 
                     <div class="row">
 
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label>Address Type <span class="required">*</span></label>
                             <select name="address_type" class="form-select " required style="padding: 10px;">
                                 <option value="">Select Address</option>
                                 <option value="1" <?= isset($client_address['address_type']) && $client_address['address_type'] == 1 ? 'selected' : '' ?>>Company</option>
                                 <option value="2" <?= isset($client_address['address_type']) && $client_address['address_type'] == 2 ? 'selected' : '' ?>>Permanent</option>
                                 <option value="3" <?= isset($client_address['address_type']) && $client_address['address_type'] == 3 ? 'selected' : '' ?>>Current</option>
-
                             </select>
                         </div>
+
+                        <div class="col-md-3 address-block d-none" id="company_address">
+                            <label>Company Address <span class="required">*</span></label>
+                            <input type="text"
+                                id="company_address_input"
+                                name="company[address]"
+                                placeholder="Enter Company Address"
+                                value="<?= htmlspecialchars($_POST['company']['address'] ?? ($company_address['address'] ?? '')) ?>">
+                        </div>
+
+                        <div class="col-md-3 address-block d-none" id="permanent_address">
+                            <label>Permanent Address <span class="required">*</span></label>
+                            <input type="text"
+                                id="permanent_address_input"
+                                name="permanent[address]"
+                                placeholder="Enter Permanent Address"
+                                value="<?= htmlspecialchars($_POST['permanent']['address'] ?? ($permanent_address['address'] ?? '')) ?>">
+                        </div>
+
+                        <div class="col-md-3 address-block d-none" id="current_address">
+                            <label>Current Address <span class="required">*</span></label>
+                            <input type="text"
+                                id="current_address_input"
+                                name="current[address]"
+                                placeholder="Enter Current Address"
+                                value="<?= htmlspecialchars($_POST['current']['address'] ?? ($current_address['address'] ?? '')) ?>">
+                        </div> 
 
                         <div class="col-md-3">
                             <label>Address<span class="required">*</span></label>
@@ -166,6 +189,58 @@
                             <label>Country Code <span class="required">*</span></label>
                             <input type="text" name="country_code" placeholder="Enter Country Code"
                                 value="<?php echo htmlspecialchars($_POST['country_code'] ?? ($client_address['country_code'] ?? '')); ?>" required>
+                        </div> -->
+
+                        
+
+                        <!-- Permanent Address -->
+                        <div class="address-block mt-2">
+                            <h6>Permanent Address</h6>
+                            <div class="row">
+                                <div class="col-md-3 mb-2">
+                                    <input type="text" name="address[permanent][address]" placeholder="Address" value="<?php echo htmlspecialchars($permanent['address'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[permanent][city]" placeholder="City" value="<?php echo htmlspecialchars($permanent['city'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[permanent][state]" placeholder="State" value="<?php echo htmlspecialchars($current['state'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[permanent][country]" placeholder="Country" value="<?php echo htmlspecialchars($current['country'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[permanent][pincode]" placeholder="Pincode" value="<?php echo htmlspecialchars($current['pincode'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[permanent][country_code]" placeholder="Country Code" value="<?php echo htmlspecialchars($current['country_code'] ?? ''); ?>">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Current Address -->
+                        <div class="address-block mt-2">
+                            <h6>Current Address</h6>
+                            <div class="row">
+                                <div class="col-md-3 mb-2">
+                                    <input type="text" name="address[current][address]" placeholder="Address" value="<?php echo htmlspecialchars($current['address'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[current][city]" placeholder="City" value="<?php echo htmlspecialchars($current['city'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[current][state]" placeholder="State" value="<?php echo htmlspecialchars($current['state'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[current][country]" placeholder="Country" value="<?php echo htmlspecialchars($current['country'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[current][pincode]" placeholder="Pincode" value="<?php echo htmlspecialchars($current['pincode'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[current][country_code]" placeholder="Country Code" value="<?php echo htmlspecialchars($current['country_code'] ?? ''); ?>">
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-md-3">
@@ -189,16 +264,41 @@
                                 required>
                         </div>
 
+                        <!-- Company Address -->
+                        <div class="address-block mt-2">
+                            <h6>Company Address</h6>
+                            <div class="row">
+                                <div class="col-md-3 mb-2">
+                                    <input type="text" name="address[company][address]" placeholder="Address" value="<?php echo htmlspecialchars($company['address'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[company][city]" placeholder="City" value="<?php echo htmlspecialchars($company['city'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[company][state]" placeholder="State" value="<?php echo htmlspecialchars($company['state'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[company][country]" placeholder="Country" value="<?php echo htmlspecialchars($company['country'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[company][pincode]" placeholder="Pincode" value="<?php echo htmlspecialchars($company['pincode'] ?? ''); ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="address[company][country_code]" placeholder="Country Code" value="<?php echo htmlspecialchars($company['country_code'] ?? ''); ?>">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-md-3">
                             <label>TRN Number <span class="required">*</span></label>
                             <input type="text" name="trn_no" placeholder="Enter TRN Number"
-                                value="<?php echo htmlspecialchars($_POST['trn_no'] ?? ($client['trn_no'] ?? '')); ?>" required>
+                                value="<?php echo htmlspecialchars($_POST['trn_no'] ?? ($client['trn_no'] ?? '')); ?>">
                         </div>
 
                         <div class="col-md-3">
                             <label>TAX Number <span class="required">*</span></label>
                             <input type="text" name="tax_no" placeholder="Enter TAX Number"
-                                value="<?php echo htmlspecialchars($_POST['tax_no'] ?? ($client['tax_no'] ?? '')); ?>" required>
+                                value="<?php echo htmlspecialchars($_POST['tax_no'] ?? ($client['tax_no'] ?? '')); ?>">
                         </div>
 
                         <div class="col-md-3">
@@ -217,7 +317,6 @@
                                 <option value="0" <?= (($_POST['email_notification'] ?? $client['email_notification'] ?? '') == 0) ? 'selected' : '' ?>>No</option>
                             </select>
                         </div>
-
 
                     </div>
 
@@ -448,49 +547,14 @@
         });
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const address1 = document.getElementById('address1');
-        const address2 = document.getElementById('address2');
-        const address3 = document.getElementById('address3');
+   
+</script>
+<script>
+    document.getElementById('address_type').addEventListener('change', function() {
+        document.querySelectorAll('.address-block').forEach(el => el.classList.add('d-none'));
 
-        const copyAddress2From1 = document.getElementById('copyAddress2From1'); // Address 2 copies from 1
-        const copyAddress3From1 = document.getElementById('copyAddress3From1'); // Address 3 copies from 1
-        const copyAddress3From2 = document.getElementById('copyAddress3From2'); // Address 3 copies from 2
-
-        // Generic copy function
-        function copyAddress(sourceInput, targetInput, checkbox) {
-            if (checkbox.checked) {
-                targetInput.value = sourceInput.value;
-                targetInput.readOnly = true;
-            } else {
-                targetInput.value = '';
-                targetInput.readOnly = false;
-            }
+        if (this.value) {
+            document.getElementById(this.value + '_address').classList.remove('d-none');
         }
-
-        // Address 2
-        copyAddress2From1.addEventListener('change', () => copyAddress(address1, address2, copyAddress2From1));
-        address1.addEventListener('input', () => {
-            if (copyAddress2From1.checked) address2.value = address1.value;
-        });
-
-        // Address 3
-        copyAddress3From1.addEventListener('change', () => copyAddress(address1, address3, copyAddress3From1));
-        copyAddress3From2.addEventListener('change', () => copyAddress(address2, address3, copyAddress3From2));
-
-        address1.addEventListener('input', () => {
-            if (copyAddress3From1.checked) address3.value = address1.value;
-        });
-        address2.addEventListener('input', () => {
-            if (copyAddress3From2.checked) address3.value = address2.value;
-        });
-
-        // Optional: uncheck other checkbox if one is checked (for Address 3)
-        copyAddress3From1.addEventListener('change', () => {
-            if (copyAddress3From1.checked) copyAddress3From2.checked = false;
-        });
-        copyAddress3From2.addEventListener('change', () => {
-            if (copyAddress3From2.checked) copyAddress3From1.checked = false;
-        });
     });
 </script>

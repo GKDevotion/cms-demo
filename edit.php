@@ -54,16 +54,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'status' => $_POST['status'] ?? 1
     ];
 
-    $addressData = [
-        'address_type' => $_POST['address_type'],
-        'address' => $_POST['address'],
-        'city' => $_POST['city'],
-        'state' => $_POST['state'],
-        'country' => $_POST['country'],
-        'pincode' => $_POST['pincode'],
-        'country_code' => $_POST['country_code']
+    // ====== ADDRESS DATA ======
+    $addresses = [];
+    $addressTypeMap = [
+        'company' => 1,
+        'permanent' => 2,
+        'current' => 3
     ];
 
+    if (!empty($_POST['address']) && is_array($_POST['address'])) {
+        foreach ($_POST['address'] as $type => $addr) {
+            if (empty($addr['address'])) continue;
+
+            $addresses[] = [
+                'address_type' => $addressTypeMap[$type],
+                'address'      => trim($addr['address'] ?? ''),
+                'city'         => trim($addr['city'] ?? ''),
+                'state'        => trim($addr['state'] ?? ''),
+                'country'      => trim($addr['country'] ?? ''),
+                'pincode'      => trim($addr['pincode'] ?? ''),
+                'country_code' => trim($addr['country_code'] ?? '')
+            ];
+        }
+    }
 
 
     // Validate data (exclude current client ID from email check)
@@ -73,14 +86,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         if ($client_obj->update($id, $data)) {
 
- 
 
-            $existingAddress = $client_obj->getAddress($id);
-
-            if ($existingAddress) {
-                $client_obj->updateAddress($id, $addressData);
-            } else {
-                $client_obj->addAddress($id, $addressData);
+               // ====== Update/Add addresses ======
+            foreach ($addresses as $addr) {
+                $existingAddress = $client_obj->getAddressByType($id, $addr['address_type']);
+                if ($existingAddress) {
+                    $client_obj->updateAddressByType($id, $addr['address_type'], $addr);
+                } else {
+                    $client_obj->addAddress($id, $addr);
+                }
             }
 
             // Update company mappings: remove existing and add selected
@@ -103,6 +117,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+$client_id = $id;
+$allAddresses = $client_obj->getAllAddresses($client_id);
+$company   = $allAddresses[1] ?? [];
+$permanent = $allAddresses[2] ?? [];
+$current   = $allAddresses[3] ?? [];
 
 // Fetch all active companies
 $companies = $client_obj->getActiveCompanies();

@@ -39,15 +39,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     /* ADDRESS DATA */
-    $addressData = [
-        'address_type' => $_POST['address_type'],
-        'address' => $_POST['address'],
-        'city' => $_POST['city'],
-        'state' => $_POST['state'],
-        'country' => $_POST['country'],
-        'pincode' => $_POST['pincode'],
-        'country_code' => $_POST['country_code']
+    $addresses = [];
+
+    $addressTypeMap = [
+        'company'   => 1,
+        'permanent' => 2,
+        'current'   => 3
     ];
+
+    if (!empty($_POST['address']) && is_array($_POST['address'])) {
+        foreach ($_POST['address'] as $type => $addr) {
+
+            if (empty($addr['address'])) {
+                continue;
+            }
+
+            $addresses[] = [
+                'address_type' => $addressTypeMap[$type],
+                'address'      => trim($addr['address'] ?? ''),
+                'city'         => trim($addr['city'] ?? ''),
+                'state'        => trim($addr['state'] ?? ''),
+                'country'      => trim($addr['country'] ?? ''),
+                'pincode'      => trim($addr['pincode'] ?? ''),
+                'country_code' => trim($addr['country_code'] ?? '')
+            ];
+        }
+    }
+
 
 
     // Validate data
@@ -60,8 +78,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($client_id) {
 
-            // Save address
-            $client_obj->addAddress($client_id, $addressData);
+
+            foreach ($addresses as $address) {
+                $client_obj->addAddress($client_id, $address);
+            }
 
             // Companies
             $selected_companies = $_POST['companies'] ?? [];

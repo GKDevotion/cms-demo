@@ -16,18 +16,7 @@ class Client
     /**
      * Validation Rules
      */
-    public static function validateFirstName($first_name)
-    {
-        $errors = [];
-        if (empty($first_name)) {
-            $errors[] = "First name is required.";
-        } elseif (strlen($first_name) < 2) {
-            $errors[] = "First name must be at least 2 characters.";
-        } elseif (!preg_match('/^[a-zA-Z\s\-\']+$/', $first_name)) {
-            $errors[] = "First name contains invalid characters.";
-        }
-        return $errors;
-    }
+    
 
     public static function validateLastName($last_name)
     {
@@ -82,7 +71,7 @@ class Client
     {
         $errors = [];
 
-        $errors = array_merge($errors, self::validateFirstName($data['first_name']));
+       
         $errors = array_merge($errors, self::validateLastName($data['last_name']));
         $errors = array_merge($errors, self::validateEmail($data['email']));
         $errors = array_merge($errors, self::validateMobileNumber($data['mobile1']));
@@ -324,6 +313,60 @@ public function updateAddress($client_id, $data)
 }
 
     
+public function getAddressByType($client_id, $address_type)
+{
+    $stmt = $this->conn->prepare("
+        SELECT * FROM client_addresses
+        WHERE client_id = ? AND address_type = ?
+        LIMIT 1
+    ");
+    $stmt->bind_param("ii", $client_id, $address_type);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $address = $result->fetch_assoc();
+    $stmt->close();
+    return $address;
+}
+public function updateAddressByType($client_id, $address_type, $data)
+{
+    $stmt = $this->conn->prepare("
+        UPDATE client_addresses
+        SET address = ?, city = ?, state = ?, country = ?, pincode = ?, country_code = ?
+        WHERE client_id = ? AND address_type = ?
+    ");
+
+    $stmt->bind_param(
+        "ssssssii",
+        $data['address'],
+        $data['city'],
+        $data['state'],
+        $data['country'],
+        $data['pincode'],
+        $data['country_code'],
+        $client_id,
+        $address_type
+    );
+
+    $success = $stmt->execute();
+    $stmt->close();
+    return $success;
+}
+public function getAllAddresses($client_id)
+{
+    $stmt = $this->conn->prepare("
+        SELECT * FROM client_addresses
+        WHERE client_id = ?
+    ");
+    $stmt->bind_param("i", $client_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $addresses = [];
+    while ($row = $result->fetch_assoc()) {
+        $addresses[$row['address_type']] = $row; // map by type
+    }
+    $stmt->close();
+    return $addresses;
+}
 
 
     /**
