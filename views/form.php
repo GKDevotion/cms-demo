@@ -240,7 +240,7 @@
                     </div>
 
 
-                    <div class="mb-2">
+                    <div class="mb-4">
                         <label>Services <span class="required">*</span></label>
                         <div class="d-flex flex-wrap gap-2  me-4">
                             <?php if (!empty($companies)): ?>
@@ -267,13 +267,13 @@
                         </div>
                     </div>
 
-                    <div class="" style="  margin-bottom: 15px;">
+                    <!-- <div class="" style="  margin-bottom: 15px;">
                         <label>Status <span class="required">*</span></label>
                         <select name="status" required class="form-control">
                             <option value="1" <?php echo ($_POST['status'] ?? ($client['status'] ?? 1)) == 1 ? 'selected' : ''; ?>>Active</option>
                             <option value="0" <?php echo ($_POST['status'] ?? ($client['status'] ?? 1)) == 0 ? 'selected' : ''; ?>>Inactive</option>
                         </select>
-                    </div>
+                    </div> -->
 
                     <button type="submit" class="btn btn-primary  " style="width:100%; background-color: #b88a2e; border: 1px solid #b88a2e;">
                         <?php echo $is_edit ? 'Update Client' : 'Save Client'; ?>
