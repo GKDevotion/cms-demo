@@ -117,82 +117,6 @@
 
                     <div class="row">
 
-                        <!-- <div class="col-md-3">
-                            <label>Address Type <span class="required">*</span></label>
-                            <select name="address_type" class="form-select " required style="padding: 10px;">
-                                <option value="">Select Address</option>
-                                <option value="1" <?= isset($client_address['address_type']) && $client_address['address_type'] == 1 ? 'selected' : '' ?>>Company</option>
-                                <option value="2" <?= isset($client_address['address_type']) && $client_address['address_type'] == 2 ? 'selected' : '' ?>>Permanent</option>
-                                <option value="3" <?= isset($client_address['address_type']) && $client_address['address_type'] == 3 ? 'selected' : '' ?>>Current</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-3 address-block d-none" id="company_address">
-                            <label>Company Address <span class="required">*</span></label>
-                            <input type="text"
-                                id="company_address_input"
-                                name="company[address]"
-                                placeholder="Enter Company Address"
-                                value="<?= htmlspecialchars($_POST['company']['address'] ?? ($company_address['address'] ?? '')) ?>">
-                        </div>
-
-                        <div class="col-md-3 address-block d-none" id="permanent_address">
-                            <label>Permanent Address <span class="required">*</span></label>
-                            <input type="text"
-                                id="permanent_address_input"
-                                name="permanent[address]"
-                                placeholder="Enter Permanent Address"
-                                value="<?= htmlspecialchars($_POST['permanent']['address'] ?? ($permanent_address['address'] ?? '')) ?>">
-                        </div>
-
-                        <div class="col-md-3 address-block d-none" id="current_address">
-                            <label>Current Address <span class="required">*</span></label>
-                            <input type="text"
-                                id="current_address_input"
-                                name="current[address]"
-                                placeholder="Enter Current Address"
-                                value="<?= htmlspecialchars($_POST['current']['address'] ?? ($current_address['address'] ?? '')) ?>">
-                        </div> 
-
-                        <div class="col-md-3">
-                            <label>Address<span class="required">*</span></label>
-                            <input type="text" id="address" name="address"
-                                placeholder="Enter Your Address"
-                                value="<?= htmlspecialchars($_POST['address'] ?? ($client_address['address'] ?? '')) ?>" required>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label>City <span class="required">*</span></label>
-                            <input type="text" name="city" placeholder="Enter City Name"
-                                value="<?php echo htmlspecialchars($_POST['city'] ?? ($client_address['city'] ?? '')); ?>" required>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label>State <span class="required">*</span></label>
-                            <input type="text" name="state" placeholder="Enter State Name"
-                                value="<?php echo htmlspecialchars($_POST['state'] ?? ($client_address['state'] ?? '')); ?>" required>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label>Country <span class="required">*</span></label>
-                            <input type="text" name="country" placeholder="Enter Country Name"
-                                value="<?php echo htmlspecialchars($_POST['country'] ?? ($client_address['country'] ?? '')); ?>" required>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label>Pincode <span class="required">*</span></label>
-                            <input type="text" name="pincode" placeholder="Enter Pincode"
-                                value="<?php echo htmlspecialchars($_POST['pincode'] ?? ($client_address['pincode'] ?? '')); ?>" required>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label>Country Code <span class="required">*</span></label>
-                            <input type="text" name="country_code" placeholder="Enter Country Code"
-                                value="<?php echo htmlspecialchars($_POST['country_code'] ?? ($client_address['country_code'] ?? '')); ?>" required>
-                        </div> -->
-
-
-
                         <!-- Permanent Address -->
                         <div class="address-block mt-2">
                             <h6>Permanent Address</h6>
@@ -212,28 +136,25 @@
                                 <div class="col-md-3">
                                     <input type="text" name="address[permanent][pincode]" placeholder="Pincode" value="<?php echo htmlspecialchars($current['pincode'] ?? ''); ?>">
                                 </div>
-                                <div class="col-md-3">
-                                    <input type="text" name="address[permanent][country_code]" placeholder="Country Code" value="<?php echo htmlspecialchars($current['country_code'] ?? ''); ?>">
-                                </div>
                             </div>
                         </div>
 
                         <!-- Current Address -->
                         <div class="address-block mt-2">
                             <h6>Current Address</h6>
+
+                            <div class="col-md-12 mb-2">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="copyCurrentFromPermanent">
+                                    <label class="form-check-label " for="copyCurrentFromPermanent" style="margin-top: 0%; margin-left: 10px;">
+                                        Same as Permanent Address
+                                    </label>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-3 mb-2">
-                                    <input type="text" name="address[current][address]" id="current_address" placeholder="Address" value="<?php echo htmlspecialchars($current['address'] ?? ''); ?>">
-                             
-                                <div class="col-md-12 mb-2">
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" id="copyCurrentFromPermanent">
-                                        <label class="form-check-label " for="copyCurrentFromPermanent" style="margin-top: 0%; margin-left: 10px;">
-                                            Same as Permanent Address
-                                        </label>
-                                    </div>
+                                    <input type="text" name="address[current][address]" id="current_address" placeholder="Address" value="<?php echo htmlspecialchars($current['address'] ?? ''); ?>"> 
                                 </div>
-                             </div>
 
                                 <div class="col-md-3">
                                     <input type="text" name="address[current][city]" placeholder="City" value="<?php echo htmlspecialchars($current['city'] ?? ''); ?>">
@@ -247,9 +168,7 @@
                                 <div class="col-md-3">
                                     <input type="text" name="address[current][pincode]" placeholder="Pincode" value="<?php echo htmlspecialchars($current['pincode'] ?? ''); ?>">
                                 </div>
-                                <div class="col-md-3">
-                                    <input type="text" name="address[current][country_code]" placeholder="Country Code" value="<?php echo htmlspecialchars($current['country_code'] ?? ''); ?>">
-                                </div>
+
                             </div>
                         </div>
 
@@ -292,9 +211,6 @@
                                 </div>
                                 <div class="col-md-3">
                                     <input type="text" name="address[company][pincode]" placeholder="Pincode" value="<?php echo htmlspecialchars($company['pincode'] ?? ''); ?>">
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" name="address[company][country_code]" placeholder="Country Code" value="<?php echo htmlspecialchars($company['country_code'] ?? ''); ?>">
                                 </div>
                             </div>
                         </div>
@@ -376,14 +292,6 @@
                         </div>
                     </div>
 
-                    <!-- <div class="" style="  margin-bottom: 15px;">
-                        <label>Status <span class="required">*</span></label>
-                        <select name="status" required class="form-control">
-                            <option value="1" <?php echo ($_POST['status'] ?? ($client['status'] ?? 1)) == 1 ? 'selected' : ''; ?>>Active</option>
-                            <option value="0" <?php echo ($_POST['status'] ?? ($client['status'] ?? 1)) == 0 ? 'selected' : ''; ?>>Inactive</option>
-                        </select>
-                    </div> -->
-
                     <button type="submit" class="btn btn-primary  " style="width:100%; background-color: #b88a2e; border: 1px solid #b88a2e;">
                         <?php echo $is_edit ? 'Update Client' : 'Save Client'; ?>
                     </button>
@@ -392,71 +300,6 @@
                 </div>
 
             </div>
-
-            <!-- RIGHT COLUMN (col-6) -->
-            <!-- <div class="col-md-8">
-                <div class="card custom-card">
-                    <label class="mb-2 fw-bold">Services <span class="required">*</span></label>
-
-                    <div class="accordion" id="servicesAccordion">
-
-                        <?php if (!empty($company_services)): ?>
-                            <?php foreach ($company_services as $index => $parent): ?>
-
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading<?= $parent['id']; ?>">
-                                        <button class="accordion-button collapsed fw-bold"
-                                            type="button"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#collapse<?= $parent['id']; ?>"
-                                            aria-expanded="false"
-                                            aria-controls="collapse<?= $parent['id']; ?>">
-                                            <i class="bi bi-arrow-down-right-circle me-2 fs-4"></i>
-                                            <?= htmlspecialchars($parent['name']); ?>
-                                        </button>
-                                    </h2>
-
-                                    <div id="collapse<?= $parent['id']; ?>"
-                                        class="accordion-collapse collapse"
-                                        aria-labelledby="heading<?= $parent['id']; ?>"
-                                        data-bs-parent="#servicesAccordion">
-
-                                        <div class="accordion-body">
-                                            <div class="row">
-                                                <?php foreach ($parent['children'] as $child): ?>
-                                                    <div class="col-md-3 col-sm-6 mb-2">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input"
-                                                                type="checkbox"
-                                                                name="company_services[]"
-                                                                value="<?= $child['id']; ?>"
-                                                                id="service<?= $child['id']; ?>"
-                                                                <?= in_array($child['id'], $client_services) ? 'checked' : ''; ?>>
-
-                                                            <label class="form-check-label" for="service<?= $child['id']; ?>" style="margin-top: 0px; margin-left:12px; font-size: 14px;">
-                                                                <?= htmlspecialchars($child['name']); ?>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No services available.</p>
-                        <?php endif; ?>
-
-                    </div>
-
-                </div>
-
-
-            </div> -->
-
         </div>
 
     </form>
@@ -570,12 +413,20 @@
 <script>
 document.getElementById('copyCurrentFromPermanent').addEventListener('change', function() {
     const checked = this.checked;
-    const permanentAddress = document.querySelector('input[name="address[permanent][address]"]').value;
 
-    if (checked) {
-        document.getElementById('current_address').value = permanentAddress;
-    } else {
-        document.getElementById('current_address').value = '';
-    }
+    // List of address field keys
+    const fields = ['address', , 'city', 'state', 'country', 'pincode'];
+
+    fields.forEach(function(field) {
+        const permanentField = document.querySelector(`input[name="address[permanent][${field}]"]`);
+        const currentField = document.querySelector(`input[name="address[current][${field}]"]`);
+        if (permanentField && currentField) {
+            if (checked) {
+                currentField.value = permanentField.value;
+            } else {
+                currentField.value = '';
+            }
+        }
+    });
 });
 </script>

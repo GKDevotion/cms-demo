@@ -72,8 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'city'         => trim($addr['city'] ?? ''),
                 'state'        => trim($addr['state'] ?? ''),
                 'country'      => trim($addr['country'] ?? ''),
-                'pincode'      => trim($addr['pincode'] ?? ''),
-                'country_code' => trim($addr['country_code'] ?? '')
+                'pincode'      => trim($addr['pincode'] ?? ''), 
             ];
         }
     }

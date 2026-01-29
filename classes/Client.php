@@ -291,18 +291,17 @@ public function updateAddress($client_id, $data)
 {
     $stmt = $this->conn->prepare("
         UPDATE client_addresses
-        SET address = ?, city = ?, state = ?, country = ?, pincode = ?, country_code = ?
+        SET address = ?, city = ?, state = ?, country = ?, pincode = ?
         WHERE client_id = ? AND address_type = ?
     ");
 
     $stmt->bind_param(
-        "sssssiis",
+        "ssssiis",
         $data['address'],
         $data['city'],
         $data['state'],
         $data['country'],
-        $data['pincode'],
-        $data['country_code'],
+        $data['pincode'], 
         $client_id,
         $data['address_type']
     );
@@ -331,18 +330,17 @@ public function updateAddressByType($client_id, $address_type, $data)
 {
     $stmt = $this->conn->prepare("
         UPDATE client_addresses
-        SET address = ?, city = ?, state = ?, country = ?, pincode = ?, country_code = ?
+        SET address = ?, city = ?, state = ?, country = ?, pincode = ?
         WHERE client_id = ? AND address_type = ?
     ");
 
     $stmt->bind_param(
-        "ssssssii",
+        "sssssii",
         $data['address'],
         $data['city'],
         $data['state'],
         $data['country'],
-        $data['pincode'],
-        $data['country_code'],
+        $data['pincode'], 
         $client_id,
         $address_type
     );
