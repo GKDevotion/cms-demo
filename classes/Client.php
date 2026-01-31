@@ -129,12 +129,12 @@ class Client
     public function create($data)
     {
         $stmt = $this->conn->prepare("
-            INSERT INTO clients (title, first_name, second_name, last_name, email, mobile1, mobile2 , landline ,  company_name, company_type, company_website,trn_no, tax_no, sms_notification, email_notification,  designation,  status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO clients (title, first_name, second_name, last_name, email, mobile1, mobile2 , landline ,  company_name, company_type, company_website,trn_no, tax_no, sms_notification, email_notification,  designation,   birth_date,  status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         $stmt->bind_param(
-            "ssssssssssssssssi",
+            "sssssssssssssssssi",
             $data['title'],
             $data['first_name'],
             $data['second_name'],
@@ -151,6 +151,7 @@ class Client
             $data['sms_notification'],
             $data['email_notification'],
             $data['designation'],
+            $data['birth_date'],
             $data['status']
         );
 
@@ -172,12 +173,12 @@ class Client
         $stmt = $this->conn->prepare("
             UPDATE clients 
             SET title = ?, first_name = ?, second_name = ?, last_name = ?, 
-                email = ?, mobile1 = ?, mobile2 = ?, landline = ?,    company_name = ?, company_type = ?, company_website = ? ,  trn_no = ?, tax_no = ?, sms_notification = ?, email_notification = ?, designation = ?, status = ?
+                email = ?, mobile1 = ?, mobile2 = ?, landline = ?,    company_name = ?, company_type = ?, company_website = ? ,  trn_no = ?, tax_no = ?, sms_notification = ?, email_notification = ?, designation = ?, birth_date = ?, status = ?
             WHERE id = ?
         ");
 
         $stmt->bind_param(
-            "ssssssssssssssssii",
+            "ssssssssssssssssssi",
             $data['title'],
             $data['first_name'],
             $data['second_name'],
@@ -194,6 +195,7 @@ class Client
             $data['sms_notification'],
             $data['email_notification'],
             $data['designation'],
+            $data['birth_date'],
             $data['status'],
             $id
         );
@@ -251,12 +253,12 @@ class Client
     {
         $stmt = $this->conn->prepare("
         INSERT INTO client_addresses 
-        (client_id, address_type, address, city, state, country, pincode, country_code)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (client_id, address_type, address, city, state, country, pincode)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     ");
 
         $stmt->bind_param(
-            "iissssss",
+            "iisssss",
             $client_id,
             $data['address_type'],
             $data['address'],
@@ -264,7 +266,7 @@ class Client
             $data['state'],
             $data['country'],
             $data['pincode'],
-            $data['country_code']
+       
         );
 
         $success = $stmt->execute();

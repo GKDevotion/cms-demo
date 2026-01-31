@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'sms_notification' => trim($_POST['sms_notification'] ?? ''),
         'email_notification' => trim($_POST['email_notification'] ?? ''),
         'designation' => trim($_POST['designation'] ?? ''),
+        'birth_date' => trim($_POST['birth_date'] ?? ''),
         'status' => $_POST['status'] ?? 1
     ];
 

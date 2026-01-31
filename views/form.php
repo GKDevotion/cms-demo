@@ -102,13 +102,13 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label>Mobile 2 <span class="required">*</span></label>
+                            <label>Mobile 2</label>
                             <input type="text" name="mobile2" placeholder="+91 1000010000"
                                 value="<?php echo htmlspecialchars($_POST['mobile2'] ?? ($client['mobile2'] ?? '')); ?>">
                         </div>
 
                         <div class="col-md-3">
-                            <label>Landline <span class="required">*</span></label>
+                            <label>Landline</label>
                             <input type="text" name="landline" placeholder="+91 1000010000"
                                 value="<?php echo htmlspecialchars($_POST['landline'] ?? ($client['landline'] ?? '')); ?>">
                         </div>
@@ -216,19 +216,19 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label>TRN Number <span class="required">*</span></label>
+                            <label>TRN Number</label>
                             <input type="text" name="trn_no" placeholder="Enter TRN Number"
                                 value="<?php echo htmlspecialchars($_POST['trn_no'] ?? ($client['trn_no'] ?? '')); ?>">
                         </div>
 
                         <div class="col-md-3">
-                            <label>TAX Number <span class="required">*</span></label>
+                            <label>TAX Number</label>
                             <input type="text" name="tax_no" placeholder="Enter TAX Number"
                                 value="<?php echo htmlspecialchars($_POST['tax_no'] ?? ($client['tax_no'] ?? '')); ?>">
                         </div>
 
                         <div class="col-md-3">
-                            <label>SMS Notification <span class="required">*</span></label>
+                            <label>SMS Notification</label>
                             <select name="sms_notification" class="form-control form-select">
                                 <option value="1" <?= (($_POST['sms_notification'] ?? $client['sms_notification'] ?? '') == 1) ? 'selected' : '' ?>>Yes</option>
                                 <option value="0" <?= (($_POST['sms_notification'] ?? $client['sms_notification'] ?? '') == 0) ? 'selected' : '' ?>>No</option>
@@ -237,7 +237,7 @@
 
 
                         <div class="col-md-3">
-                            <label>Email Notification <span class="required">*</span></label>
+                            <label>Email Notification</label>
                             <select name="email_notification" class="form-control form-select">
                                 <option value="1" <?= (($_POST['email_notification'] ?? $client['email_notification'] ?? '') == 1) ? 'selected' : '' ?>>Yes</option>
                                 <option value="0" <?= (($_POST['email_notification'] ?? $client['email_notification'] ?? '') == 0) ? 'selected' : '' ?>>No</option>
@@ -248,17 +248,24 @@
 
                     <div class="row">
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>Email <span class="required">*</span></label>
                             <input type="email" name="email" placeholder="example@email.com"
                                 value="<?php echo htmlspecialchars($_POST['email'] ?? ($client['email'] ?? '')); ?>"
                                 required>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>Designation <span class="required">*</span></label>
                             <input type="text" name="designation" placeholder="e.g., Manager, Director"
                                 value="<?php echo htmlspecialchars($_POST['designation'] ?? ($client['designation'] ?? '')); ?>"
+                                required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Birth Date <span class="required">*</span></label>
+                            <input type="date" name="birth_date" placeholder="e.g., 1990-01-01"
+                                value="<?php echo htmlspecialchars($_POST['birth_date'] ?? ($client['birth_date'] ?? '')); ?>"
                                 required>
                         </div>
 
