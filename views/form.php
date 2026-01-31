@@ -173,24 +173,21 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label>Company Name <span class="required">*</span></label>
+                            <label>Company Name</label>
                             <input type="text" name="company_name" placeholder="Enter Company Name"
-                                value="<?php echo htmlspecialchars($_POST['company_name'] ?? ($client['company_name'] ?? '')); ?>"
-                                required>
+                                value="<?php echo htmlspecialchars($_POST['company_name'] ?? ($client['company_name'] ?? '')); ?>">
                         </div>
 
                         <div class="col-md-3">
-                            <label>Company Type <span class="required">*</span></label>
+                            <label>Company Type</label>
                             <input type="text" name="company_type" placeholder="Enter company Type"
-                                value="<?php echo htmlspecialchars($_POST['company_type'] ?? ($client['company_type'] ?? '')); ?>"
-                                required>
+                                value="<?php echo htmlspecialchars($_POST['company_type'] ?? ($client['company_type'] ?? '')); ?>">
                         </div>
 
                         <div class="col-md-3">
-                            <label>Company Website <span class="required">*</span></label>
+                            <label>Company Website</label>
                             <input type="text" name="company_website" placeholder="Enter Company Website"
-                                value="<?php echo htmlspecialchars($_POST['company_website'] ?? ($client['company_website'] ?? '')); ?>"
-                                required>
+                                value="<?php echo htmlspecialchars($_POST['company_website'] ?? ($client['company_website'] ?? '')); ?>">
                         </div>
 
                         <!-- Company Address -->
