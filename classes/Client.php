@@ -252,10 +252,10 @@ class Client
     public function addAddress($client_id, $data)
     {
         $stmt = $this->conn->prepare("
-        INSERT INTO client_addresses 
-        (client_id, address_type, address, city, state, country, pincode)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ");
+            INSERT INTO client_addresses 
+            (client_id, address_type, address, city, state, country, pincode)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ");
 
         $stmt->bind_param(
             "iisssss",
@@ -275,99 +275,100 @@ class Client
     }
 
     public function getAddress($client_id)
-{
-    $stmt = $this->conn->prepare("
-        SELECT * FROM client_addresses
-        WHERE client_id = ?
-        LIMIT 1
-    ");
-    $stmt->bind_param("i", $client_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $address = $result->fetch_assoc();
-    $stmt->close();
-    return $address;
-}
+    {
+        $stmt = $this->conn->prepare("
+            SELECT * FROM client_addresses
+            WHERE client_id = ?
+            LIMIT 1
+        ");
+        $stmt->bind_param("i", $client_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $address = $result->fetch_assoc();
+        $stmt->close();
+        return $address;
+    }
 
-public function updateAddress($client_id, $data)
-{
-    $stmt = $this->conn->prepare("
-        UPDATE client_addresses
-        SET address = ?, city = ?, state = ?, country = ?, pincode = ?
-        WHERE client_id = ? AND address_type = ?
-    ");
+    public function updateAddress($client_id, $data)
+    {
+        $stmt = $this->conn->prepare("
+            UPDATE client_addresses
+            SET address = ?, city = ?, state = ?, country = ?, pincode = ?
+            WHERE client_id = ? AND address_type = ?
+        ");
 
-    $stmt->bind_param(
-        "ssssiis",
-        $data['address'],
-        $data['city'],
-        $data['state'],
-        $data['country'],
-        $data['pincode'], 
-        $client_id,
-        $data['address_type']
-    );
+        $stmt->bind_param(
+            "ssssiis",
+            $data['address'],
+            $data['city'],
+            $data['state'],
+            $data['country'],
+            $data['pincode'], 
+            $client_id,
+            $data['address_type']
+        );
 
-    $success = $stmt->execute();
-    $stmt->close();
-    return $success;
-}
+        $success = $stmt->execute();
+        $stmt->close();
+        return $success;
+    }
 
     
-public function getAddressByType($client_id, $address_type)
-{
-    $stmt = $this->conn->prepare("
-        SELECT * FROM client_addresses
-        WHERE client_id = ? AND address_type = ?
-        LIMIT 1
-    ");
-    $stmt->bind_param("ii", $client_id, $address_type);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $address = $result->fetch_assoc();
-    $stmt->close();
-    return $address;
-}
-public function updateAddressByType($client_id, $address_type, $data)
-{
-    $stmt = $this->conn->prepare("
-        UPDATE client_addresses
-        SET address = ?, city = ?, state = ?, country = ?, pincode = ?
-        WHERE client_id = ? AND address_type = ?
-    ");
-
-    $stmt->bind_param(
-        "sssssii",
-        $data['address'],
-        $data['city'],
-        $data['state'],
-        $data['country'],
-        $data['pincode'], 
-        $client_id,
-        $address_type
-    );
-
-    $success = $stmt->execute();
-    $stmt->close();
-    return $success;
-}
-public function getAllAddresses($client_id)
-{
-    $stmt = $this->conn->prepare("
-        SELECT * FROM client_addresses
-        WHERE client_id = ?
-    ");
-    $stmt->bind_param("i", $client_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $addresses = [];
-    while ($row = $result->fetch_assoc()) {
-        $addresses[$row['address_type']] = $row; // map by type
+    public function getAddressByType($client_id, $address_type)
+    {
+        $stmt = $this->conn->prepare("
+            SELECT * FROM client_addresses
+            WHERE client_id = ? AND address_type = ?
+            LIMIT 1
+        ");
+        $stmt->bind_param("ii", $client_id, $address_type);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $address = $result->fetch_assoc();
+        $stmt->close();
+        return $address;
     }
-    $stmt->close();
-    return $addresses;
-}
 
+    public function updateAddressByType($client_id, $address_type, $data)
+    {
+        $stmt = $this->conn->prepare("
+            UPDATE client_addresses
+            SET address = ?, city = ?, state = ?, country = ?, pincode = ?
+            WHERE client_id = ? AND address_type = ?
+        ");
+
+        $stmt->bind_param(
+            "sssssii",
+            $data['address'],
+            $data['city'],
+            $data['state'],
+            $data['country'],
+            $data['pincode'], 
+            $client_id,
+            $address_type
+        );
+
+        $success = $stmt->execute();
+        $stmt->close();
+        return $success;
+    }
+
+    public function getAllAddresses($client_id)
+    {
+        $stmt = $this->conn->prepare("
+            SELECT * FROM client_addresses
+            WHERE client_id = ?
+        ");
+        $stmt->bind_param("i", $client_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $addresses = [];
+        while ($row = $result->fetch_assoc()) {
+            $addresses[$row['address_type']] = $row; // map by type
+        }
+        $stmt->close();
+        return $addresses;
+    }
 
     /**
      * Add company to client
@@ -431,19 +432,17 @@ public function getAllAddresses($client_id)
     public function getActiveServices()
     {
         $result = $this->conn->query("
-        SELECT id, name, parent_id
-        FROM company_services
-        WHERE status = 1
-        ORDER BY 
-            CASE WHEN parent_id IS NULL THEN 0 ELSE 1 END,
-            parent_id ASC,
-            id ASC
-    ");
+            SELECT id, name, parent_id
+            FROM company_services
+            WHERE status = 1
+            ORDER BY 
+                CASE WHEN parent_id IS NULL THEN 0 ELSE 1 END,
+                parent_id ASC,
+                id ASC
+        ");
 
         return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
     }
-
-
 
     /**
      * Get all active companies
@@ -500,8 +499,8 @@ public function getAllAddresses($client_id)
     public function getClientServices($client_id)
     {
         $stmt = $this->conn->prepare("
-        SELECT service_id FROM client_service_map WHERE client_id = ?
-    ");
+            SELECT service_id FROM client_service_map WHERE client_id = ?
+        ");
         $stmt->bind_param("i", $client_id);
         $stmt->execute();
         $result = $stmt->get_result();

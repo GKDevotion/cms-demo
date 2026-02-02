@@ -60,6 +60,7 @@ if ($action === 'fetch') {
                         {$statusText}
                     </span>
                 </td>
+                <td>{$row['created_at']}</td>
                 <td>
                     <div class='action-wrapper'>
                         <button class='action-btn' onclick='toggleMenu(this)'>⋮</button>
