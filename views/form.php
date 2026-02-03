@@ -96,20 +96,20 @@
 
                         <div class="col-md-3">
                             <label>Mobile 1 <span class="required">*</span></label>
-                            <input type="text" name="mobile1" placeholder="+91 1000010000"
+                            <input type="number" name="mobile1" placeholder="1000010000"
                                 value="<?php echo htmlspecialchars($_POST['mobile1'] ?? ($client['mobile1'] ?? '')); ?>"
                                 required>
                         </div>
 
                         <div class="col-md-3">
                             <label>Mobile 2</label>
-                            <input type="text" name="mobile2" placeholder="+91 1000010000"
+                            <input type="number" name="mobile2" placeholder="1000010000"
                                 value="<?php echo htmlspecialchars($_POST['mobile2'] ?? ($client['mobile2'] ?? '')); ?>">
                         </div>
 
                         <div class="col-md-3">
                             <label>Landline</label>
-                            <input type="text" name="landline" placeholder="+91 1000010000"
+                            <input type="number" name="landline" placeholder="1000010000"
                                 value="<?php echo htmlspecialchars($_POST['landline'] ?? ($client['landline'] ?? '')); ?>">
                         </div>
 

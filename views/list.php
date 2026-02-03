@@ -41,7 +41,7 @@ $services = $client->getActiveCompanies();
             <div class="col-md-3">
                 <label class="form-label">Mobile Number</label>
                 <input
-                type="text"
+                type="number"
                 name="mobile"
                 class="form-control"
                 placeholder="+91 90000 00000"
