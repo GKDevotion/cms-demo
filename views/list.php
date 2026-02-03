@@ -122,7 +122,6 @@ $services = $client->getActiveCompanies();
                 type="date"
                 name="from_date"
                 class="form-control"
-                required
                 >
             </div>
 

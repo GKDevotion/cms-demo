@@ -29,15 +29,16 @@ $data = $reportService->getClientReport($filters);
 <table border="1" cellpadding="5" style="width: 100%;">
     <thead>
         <tr style="background-color:#f2f2f2; font-weight:bold;">
-        <th width="5%">ID</th>
-        <th width="15%">Client Name</th>
-        <th width="15%">Mobile</th>
-        <th width="10%">Birth Date</th>
-        <th width="12%">Country</th>
-        <th width="12%">State</th>
-        <th width="12%">City</th>
-        <th width="10%">Pincode</th>
-        <th width="19%">Services</th>
+            <th width="5%">ID</th>
+            <th width="15%">Client Name</th>
+            <th width="15%">Mobile</th>
+            <th width="10%">Birth Date</th>
+            <th width="12%">Country</th>
+            <th width="12%">State</th>
+            <th width="12%">City</th>
+            <th width="10%">Pincode</th>
+            <th width="19%">Services</th>
+            <th width="19%">Created At</th>
         </tr>
     </thead>
     <tbody>
@@ -64,6 +65,7 @@ $data = $reportService->getClientReport($filters);
                 <td>'.$row['city'].'</td>
                 <td>'.$row['pincode'].'</td>
                 <td>'.$row['services'].'</td>
+                <td>'.$row['created_at'].'</td>
             </tr>';
         }
 
