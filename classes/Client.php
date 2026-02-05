@@ -47,7 +47,7 @@ class Client
         $errors = [];
         if (empty($mobile1)) {
             $errors[] = "Mobile number is required.";
-        } elseif (!preg_match('/^[0-9\+\-\(\)\s]{10,20}$/', $mobile1)) {
+        } elseif (!preg_match('/^[0-9\+\-\(\)\s]{7,20}$/', $mobile1)) {
             $errors[] = "Invalid mobile number format. Use digits, spaces, +, -, or () only.";
         }
         return $errors;
