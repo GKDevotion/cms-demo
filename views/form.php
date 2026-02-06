@@ -31,6 +31,7 @@
             <button type="submit"
                 class="btn btn-primary"
                 style="background-color:#b88a2e; border:1px solid #b88a2e;">
+                <i class="bi bi-save" aria-hidden="true"></i>
                 <?php echo $is_edit ? 'Update Client' : 'Save Client'; ?>
             </button>
         </div>
