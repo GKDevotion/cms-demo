@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'first_name' => trim($_POST['first_name'] ?? ''),
         'second_name' => trim($_POST['second_name'] ?? ''),
         'last_name' => trim($_POST['last_name'] ?? ''),
-        'email' => trim($_POST['email'] ?? ''), 
+        'email' => trim($_POST['email'] ?? ''),
         'country_code' => trim($_POST['country_code'] ?? ''),
         'mobile1' => trim($_POST['mobile1'] ?? ''),
         'mobile2' => trim($_POST['mobile2'] ?? ''),
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'city'         => trim($addr['city'] ?? ''),
                 'state'        => trim($addr['state'] ?? ''),
                 'country'      => trim($addr['country'] ?? ''),
-                'pincode'      => trim($addr['pincode'] ?? ''), 
+                'pincode'      => trim($addr['pincode'] ?? ''),
             ];
         }
     }
@@ -73,8 +73,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = $client_obj->validateClient($data);
 
     // If no errors, insert data
-    if (empty($errors)) {
-
+    if (empty($errors)) { 
+        
+        $data['client_uid'] = $client_obj->generateClientUID();
         $client_id = $client_obj->create($data);
 
         if ($client_id) {

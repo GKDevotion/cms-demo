@@ -46,7 +46,7 @@ if ($action === 'fetch') {
 
             echo "
             <tr>
-                <td>{$sr}</td>
+                <td>{$row['client_uid']}</td>
                 <td>{$fullName}</td>
                 <td>{$row['email']}</td>
                 <td>{$row['mobile1']}</td> 

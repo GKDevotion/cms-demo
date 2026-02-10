@@ -16,7 +16,7 @@ class Client
     /**
      * Validation Rules
      */
-    
+
 
     public static function validateLastName($last_name)
     {
@@ -71,7 +71,7 @@ class Client
     {
         $errors = [];
 
-       
+
         $errors = array_merge($errors, self::validateLastName($data['last_name']));
         $errors = array_merge($errors, self::validateEmail($data['email']));
         $errors = array_merge($errors, self::validateMobileNumber($data['mobile1']));
@@ -129,12 +129,13 @@ class Client
     public function create($data)
     {
         $stmt = $this->conn->prepare("
-            INSERT INTO clients (title, first_name, second_name, last_name, email, country_code, mobile1, mobile2 , landline ,  company_name, company_type, company_website,trn_no, tax_no, sms_notification, email_notification,  designation,   birth_date,  status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO clients ( client_uid, title, first_name, second_name, last_name, email, country_code, mobile1, mobile2 , landline ,  company_name, company_type, company_website,trn_no, tax_no, sms_notification, email_notification,  designation,   birth_date,  status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         $stmt->bind_param(
-            "sssssssssssssssssi",
+            "sssssssssssssssssssi",
+            $data['client_uid'],
             $data['title'],
             $data['first_name'],
             $data['second_name'],
@@ -228,20 +229,20 @@ class Client
     /**
      * Get paginated clients
      */
-   public function getPaginated($page = 1, $limit = 10)
-{
-    $page = max($page, 1);
-    $offset = ($page - 1) * $limit;
+    public function getPaginated($page = 1, $limit = 10)
+    {
+        $page = max($page, 1);
+        $offset = ($page - 1) * $limit;
 
-    /* ===== TOTAL COUNT ===== */
-    $totalSql = "SELECT COUNT(DISTINCT clients.id) AS total FROM clients";
-    $totalResult = $this->conn->query($totalSql);
-    $totalRow = $totalResult->fetch_assoc();
-    $totalRecords = (int)$totalRow['total'];
-    $totalPages = ceil($totalRecords / $limit);
+        /* ===== TOTAL COUNT ===== */
+        $totalSql = "SELECT COUNT(DISTINCT clients.id) AS total FROM clients";
+        $totalResult = $this->conn->query($totalSql);
+        $totalRow = $totalResult->fetch_assoc();
+        $totalRecords = (int)$totalRow['total'];
+        $totalPages = ceil($totalRecords / $limit);
 
-    /* ===== FETCH CLIENTS WITH COMPANIES ===== */
-    $sql = "
+        /* ===== FETCH CLIENTS WITH COMPANIES ===== */
+        $sql = "
         SELECT 
             clients.*,
             GROUP_CONCAT(
@@ -259,19 +260,19 @@ class Client
         LIMIT ? OFFSET ?
     ";
 
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param("ii", $limit, $offset);
-    $stmt->execute();
-    $result = $stmt->get_result();
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    return [
-        'clients' => $result->fetch_all(MYSQLI_ASSOC),
-        'totalRecords' => $totalRecords,
-        'totalPages' => $totalPages,
-        'currentPage' => $page,
-        'offset' => $offset
-    ];
-}
+        return [
+            'clients' => $result->fetch_all(MYSQLI_ASSOC),
+            'totalRecords' => $totalRecords,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+            'offset' => $offset
+        ];
+    }
 
 
     public function addAddress($client_id, $data)
@@ -291,7 +292,7 @@ class Client
             $data['state'],
             $data['country'],
             $data['pincode'],
-       
+
         );
 
         $success = $stmt->execute();
@@ -328,7 +329,7 @@ class Client
             $data['city'],
             $data['state'],
             $data['country'],
-            $data['pincode'], 
+            $data['pincode'],
             $client_id,
             $data['address_type']
         );
@@ -338,7 +339,7 @@ class Client
         return $success;
     }
 
-    
+
     public function getAddressByType($client_id, $address_type)
     {
         $stmt = $this->conn->prepare("
@@ -368,7 +369,7 @@ class Client
             $data['city'],
             $data['state'],
             $data['country'],
-            $data['pincode'], 
+            $data['pincode'],
             $client_id,
             $address_type
         );
@@ -539,5 +540,36 @@ class Client
 
         $stmt->close();
         return $service_ids;
+    }
+
+    public function generateClientUID()
+    {
+        $today = date('ymd'); // 260210
+
+        $sql = "
+        SELECT client_uid 
+        FROM clients 
+        WHERE client_uid LIKE CONCAT(?, '%')
+        ORDER BY client_uid DESC 
+        LIMIT 1
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $today);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            // Extract last 3 digits and increment
+            $lastSeq = (int)substr($row['client_uid'], -3);
+            $nextSeq = str_pad($lastSeq + 1, 3, '0', STR_PAD_LEFT);
+        } else {
+            // First record of the day
+            $nextSeq = '001';
+        }
+
+        $stmt->close();
+
+        return $today . $nextSeq; // 260210001
     }
 }
