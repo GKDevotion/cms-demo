@@ -149,10 +149,11 @@ if ($action === 'search') {
                     OR clients.company_website LIKE ? 
                     OR clients.designation LIKE ? 
                     OR clients.tax_no LIKE ? 
+                    OR clients.created_at LIKE ? 
                     OR comp.company_name LIKE ? 
                     OR ca.address LIKE ?
                     OR ca.city LIKE ?
-                    OR ca.state LIKE ?
+                    OR ca.state LIKE ? 
                     OR ca.country LIKE ?
                     OR ca.pincode LIKE ?
                 GROUP BY clients.id
@@ -161,7 +162,7 @@ if ($action === 'search') {
 
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
-            "sssssssssssssss", $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery );
+            "ssssssssssssssss", $searchQuery, $searchQuery ,$searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery );
         $stmt->execute();
         $result = $stmt->get_result();
         $clients = $result->fetch_all(MYSQLI_ASSOC);
@@ -197,6 +198,7 @@ if ($action === 'search') {
                 : "<span class='text-muted'>—</span>") . "
                 </td>
 
+                <td>{$row['created_at']}</td> 
                 <td>
                     <div class='action-wrapper'>
                         <button class='action-btn' onclick='toggleMenu(this)'>⋮</button>
