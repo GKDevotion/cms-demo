@@ -13,7 +13,13 @@
 
 ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<!-- intl-tel-input CSS -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/css/intlTelInput.css"/>
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+      
 
 <div class="container-fluid mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -95,6 +101,16 @@
 
                     <div class="row">
 
+                        <!-- form -->
+                         <div class="col-md-1">
+                        <div class="form-group">
+                            <label for="country_code" class="font-weight-bold text-dark">Country Code</label>
+                            <div class="input-group input-group-sm">
+                                <input id="country_code" type="tel" name="country_code"   autofocus required >
+                            </div>
+                        </div>
+                         </div>
+ 
                         <div class="col-md-3">
                             <label>Mobile 1 <span class="required">*</span></label>
                             <input type="number" name="mobile1" placeholder="1000010000"
@@ -154,7 +170,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3 mb-2">
-                                    <input type="text" name="address[current][address]" id="current_address" placeholder="Address" value="<?php echo htmlspecialchars($current['address'] ?? ''); ?>"> 
+                                    <input type="text" name="address[current][address]" id="current_address" placeholder="Address" value="<?php echo htmlspecialchars($current['address'] ?? ''); ?>">
                                 </div>
 
                                 <div class="col-md-3">
@@ -179,7 +195,7 @@
                                 value="<?php echo htmlspecialchars($_POST['company_name'] ?? ($client['company_name'] ?? '')); ?>">
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 d-none">
                             <label>Company Type</label>
                             <input type="text" name="company_type" placeholder="Enter company Type"
                                 value="<?php echo htmlspecialchars($_POST['company_type'] ?? ($client['company_type'] ?? '')); ?>">
@@ -233,7 +249,6 @@
                             </select>
                         </div>
 
-
                         <div class="col-md-3">
                             <label>Email Notification</label>
                             <select name="email_notification" class="form-control form-select">
@@ -254,10 +269,9 @@
                         </div>
 
                         <div class="col-md-4">
-                            <label>Designation <span class="required">*</span></label>
+                            <label>Designation</label>
                             <input type="text" name="designation" placeholder="e.g., Manager, Director"
-                                value="<?php echo htmlspecialchars($_POST['designation'] ?? ($client['designation'] ?? '')); ?>"
-                                required>
+                                value="<?php echo htmlspecialchars($_POST['designation'] ?? ($client['designation'] ?? '')); ?>">
                         </div>
 
                         <div class="col-md-4">
@@ -395,6 +409,11 @@
     }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+ 
+<!-- intl-tel-input JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>
+
+
 <script>
     document.querySelectorAll('.child-checkbox').forEach(child => {
         child.addEventListener('change', function() {
@@ -416,22 +435,52 @@
 </script>
 
 <script>
-document.getElementById('copyCurrentFromPermanent').addEventListener('change', function() {
-    const checked = this.checked;
+    document.getElementById('copyCurrentFromPermanent').addEventListener('change', function() {
+        const checked = this.checked;
 
-    // List of address field keys
-    const fields = ['address', , 'city', 'state', 'country', 'pincode'];
+        // List of address field keys
+        const fields = ['address', , 'city', 'state', 'country', 'pincode'];
 
-    fields.forEach(function(field) {
-        const permanentField = document.querySelector(`input[name="address[permanent][${field}]"]`);
-        const currentField = document.querySelector(`input[name="address[current][${field}]"]`);
-        if (permanentField && currentField) {
-            if (checked) {
-                currentField.value = permanentField.value;
-            } else {
-                currentField.value = '';
+        fields.forEach(function(field) {
+            const permanentField = document.querySelector(`input[name="address[permanent][${field}]"]`);
+            const currentField = document.querySelector(`input[name="address[current][${field}]"]`);
+            if (permanentField && currentField) {
+                if (checked) {
+                    currentField.value = permanentField.value;
+                } else {
+                    currentField.value = '';
+                }
             }
-        }
+        });
     });
+ 
+ 
+document.addEventListener("DOMContentLoaded", function () {
+
+    const input = document.querySelector("#country_code");
+
+    const iti = window.intlTelInput(input, {
+        initialCountry: "in",
+        separateDialCode: false,   // IMPORTANT
+        allowDropdown: true,
+        nationalMode: false,
+        autoPlaceholder: "off",
+        utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js"
+    });
+
+    // Set initial dial code
+    const initialData = iti.getSelectedCountryData();
+    input.value = "+" + initialData.dialCode;
+
+    // Update dial code on country change
+    input.addEventListener("countrychange", function () {
+        const countryData = iti.getSelectedCountryData();
+        input.value = "+" + countryData.dialCode;
+    });
+
 });
+ 
+ 
+
 </script>

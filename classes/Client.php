@@ -129,7 +129,7 @@ class Client
     public function create($data)
     {
         $stmt = $this->conn->prepare("
-            INSERT INTO clients (title, first_name, second_name, last_name, email, mobile1, mobile2 , landline ,  company_name, company_type, company_website,trn_no, tax_no, sms_notification, email_notification,  designation,   birth_date,  status)
+            INSERT INTO clients (title, first_name, second_name, last_name, email, country_code, mobile1, mobile2 , landline ,  company_name, company_type, company_website,trn_no, tax_no, sms_notification, email_notification,  designation,   birth_date,  status)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
@@ -140,6 +140,7 @@ class Client
             $data['second_name'],
             $data['last_name'],
             $data['email'],
+            $data['country_code'],
             $data['mobile1'],
             $data['mobile2'],
             $data['landline'],
@@ -173,17 +174,18 @@ class Client
         $stmt = $this->conn->prepare("
             UPDATE clients 
             SET title = ?, first_name = ?, second_name = ?, last_name = ?, 
-                email = ?, mobile1 = ?, mobile2 = ?, landline = ?,    company_name = ?, company_type = ?, company_website = ? ,  trn_no = ?, tax_no = ?, sms_notification = ?, email_notification = ?, designation = ?, birth_date = ?, status = ?
+                email = ?, country_code = ?, mobile1 = ?, mobile2 = ?, landline = ?,    company_name = ?, company_type = ?, company_website = ? ,  trn_no = ?, tax_no = ?, sms_notification = ?, email_notification = ?, designation = ?, birth_date = ?, status = ?
             WHERE id = ?
         ");
 
         $stmt->bind_param(
-            "ssssssssssssssssssi",
+            "sssssssssssssssssssi",
             $data['title'],
             $data['first_name'],
             $data['second_name'],
             $data['last_name'],
             $data['email'],
+            $data['country_code'],
             $data['mobile1'],
             $data['mobile2'],
             $data['landline'],
@@ -226,28 +228,51 @@ class Client
     /**
      * Get paginated clients
      */
-    public function getPaginated($page = 1, $limit = 10)
-    {
-        $page = max($page, 1);
-        $offset = ($page - 1) * $limit;
+   public function getPaginated($page = 1, $limit = 10)
+{
+    $page = max($page, 1);
+    $offset = ($page - 1) * $limit;
 
-        // Get total records
-        $totalResult = $this->conn->query("SELECT COUNT(*) AS total FROM clients");
-        $totalRow = $totalResult->fetch_assoc();
-        $totalRecords = $totalRow['total'];
-        $totalPages = ceil($totalRecords / $limit);
+    /* ===== TOTAL COUNT ===== */
+    $totalSql = "SELECT COUNT(DISTINCT clients.id) AS total FROM clients";
+    $totalResult = $this->conn->query($totalSql);
+    $totalRow = $totalResult->fetch_assoc();
+    $totalRecords = (int)$totalRow['total'];
+    $totalPages = ceil($totalRecords / $limit);
 
-        // Get paginated data
-        $result = $this->conn->query("SELECT * FROM clients ORDER BY id DESC LIMIT $limit OFFSET $offset");
+    /* ===== FETCH CLIENTS WITH COMPANIES ===== */
+    $sql = "
+        SELECT 
+            clients.*,
+            GROUP_CONCAT(
+                comp.company_name 
+                ORDER BY comp.company_name 
+                SEPARATOR ', '
+            ) AS companies
+        FROM clients
+        LEFT JOIN client_company_map ccm 
+            ON ccm.client_id = clients.id
+        LEFT JOIN companies comp 
+            ON comp.id = ccm.company_id
+        GROUP BY clients.id
+        ORDER BY clients.id DESC
+        LIMIT ? OFFSET ?
+    ";
 
-        return [
-            'clients' => $result->fetch_all(MYSQLI_ASSOC),
-            'totalRecords' => $totalRecords,
-            'totalPages' => $totalPages,
-            'currentPage' => $page,
-            'offset' => $offset
-        ];
-    }
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("ii", $limit, $offset);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    return [
+        'clients' => $result->fetch_all(MYSQLI_ASSOC),
+        'totalRecords' => $totalRecords,
+        'totalPages' => $totalPages,
+        'currentPage' => $page,
+        'offset' => $offset
+    ];
+}
+
 
     public function addAddress($client_id, $data)
     {

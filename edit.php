@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'second_name' => trim($_POST['second_name'] ?? ''),
         'last_name' => trim($_POST['last_name'] ?? ''),
         'email' => trim($_POST['email'] ?? ''),
+        'country_code' => trim($_POST['country_code'] ?? ''),
         'mobile1' => trim($_POST['mobile1'] ?? ''),
         'mobile2' => trim($_POST['mobile2'] ?? ''),
         'landline' => trim($_POST['landline'] ?? ''),

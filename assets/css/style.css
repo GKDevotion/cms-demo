@@ -488,3 +488,51 @@ tr:hover {
         font-size: 14px;
     }
 }
+ /* Make intl-tel-input fit Bootstrap input-group */
+.iti {
+    width: 100%;
+}
+
+.iti__country-list {
+    z-index: 1055; /* above modal, dropdowns */
+}
+
+/* Optional: better flag alignment */
+.iti__flag {
+    background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/img/flags.png");
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .iti__flag {
+        background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/img/flags@2x.png");
+    }
+}
+
+/* Company badge container (table cell) */
+td .companies-listing {
+    background: #c4912f;          /* premium gold */
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 6px;
+    line-height: 1.2;
+    display: inline-block;
+    margin: 2px 4px 2px 0;
+    white-space: nowrap;
+}
+
+/* Keep badges aligned & wrapped nicely */
+td {
+    vertical-align: middle;
+}
+
+/* Optional: limit width so rows don’t explode */
+td .companies-listing {
+    max-width: 100%;
+}
+
+/* Smooth hover (optional but nice) */
+td .companies-listing:hover {
+    background: #b07f20;
+    transition: 0.2s ease;
+}

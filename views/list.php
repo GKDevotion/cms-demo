@@ -43,13 +43,8 @@ $services = $client->getActiveCompanies();
                 <th>Sr</th> 
                 <th>Name</th>
                 <th>Email</th>
-                <th>Mobile1</th>
-                <th>Mobile2</th> 
-                <th>Company Name</th>
-                <th>Company Type</th>
-                <th>Company Website</th>
-                <th>Designation</th>
-                <th>Status</th>
+                <th>Mobile1</th> 
+                <th>Services</th>
                 <th>Created At</th>
                 <th>Action</th>
             </tr>

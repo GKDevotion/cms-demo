@@ -49,17 +49,20 @@ if ($action === 'fetch') {
                 <td>{$sr}</td>
                 <td>{$fullName}</td>
                 <td>{$row['email']}</td>
-                <td>{$row['mobile1']}</td>
-                <td>{$row['mobile2']}</td> 
-                <td>{$row['company_name']}</td>
-                <td>{$row['company_type']}</td>
-                <td>{$row['company_website']}</td>
-                <td>{$row['designation']}</td>
+                <td>{$row['mobile1']}</td> 
                 <td>
-                    <span onclick='toggleStatus({$row['id']})' style='cursor:pointer'>
-                        {$statusText}
-                    </span>
+                    " . (!empty($row['companies'])
+                ? "<span class='badge companies-listing text-white p-2'>" .
+                str_replace(
+                    ', ',
+                    "</span> <span class='badge companies-listing text-white p-2'>",
+                    htmlspecialchars($row['companies'])
+                ) .
+                "</span>"
+                : "<span class='text-muted'>—</span>") . "
                 </td>
+
+
                 <td>{$row['created_at']}</td>
                 <td>
                     <div class='action-wrapper'>
@@ -123,32 +126,42 @@ if ($action === 'search') {
     } else {
         // Search in multiple fields including associated company name
         $searchQuery = "%$query%";
-        $sql = "SELECT DISTINCT clients.* FROM clients 
-            LEFT JOIN client_company_map ccm ON ccm.client_id = clients.id
-            LEFT JOIN companies comp ON comp.id = ccm.company_id 
-            LEFT JOIN client_addresses ca ON ca.client_id = clients.id
 
-            WHERE CONCAT(clients.first_name, ' ', clients.second_name, ' ', clients.last_name) LIKE ? 
-            OR clients.email LIKE ? 
-            OR clients.mobile1 LIKE ? 
-            OR clients.mobile2 LIKE ? 
-            OR clients.landline LIKE ? 
-            OR clients.company_name LIKE ? 
-            OR clients.company_type LIKE ?  
-            OR clients.company_website LIKE ? 
-            OR clients.designation LIKE ? 
-            OR clients.tax_no LIKE ? 
-            OR comp.company_name LIKE ? 
-            OR ca.address LIKE ?
-            OR ca.city LIKE ?
-            OR ca.state LIKE ?
-            OR ca.country LIKE ?
-            OR ca.pincode LIKE ?
-
-            ORDER BY clients.id DESC";
+        $sql = "
+                SELECT 
+                    clients.*,
+                    GROUP_CONCAT(
+                        DISTINCT comp.company_name 
+                        ORDER BY comp.company_name 
+                        SEPARATOR ', '
+                    ) AS companies
+                FROM clients
+                LEFT JOIN client_company_map ccm ON ccm.client_id = clients.id
+                LEFT JOIN companies comp ON comp.id = ccm.company_id
+                LEFT JOIN client_addresses ca ON ca.client_id = clients.id
+                WHERE 
+                    CONCAT(clients.first_name, ' ', clients.second_name, ' ', clients.last_name) LIKE ? 
+                    OR clients.email LIKE ? 
+                    OR clients.mobile1 LIKE ? 
+                    OR clients.landline LIKE ? 
+                    OR clients.company_name LIKE ? 
+                    OR clients.company_type LIKE ?  
+                    OR clients.company_website LIKE ? 
+                    OR clients.designation LIKE ? 
+                    OR clients.tax_no LIKE ? 
+                    OR comp.company_name LIKE ? 
+                    OR ca.address LIKE ?
+                    OR ca.city LIKE ?
+                    OR ca.state LIKE ?
+                    OR ca.country LIKE ?
+                    OR ca.pincode LIKE ?
+                GROUP BY clients.id
+                ORDER BY clients.id DESC
+                ";
 
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssssssssssssss", $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery,$searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery);
+        $stmt->bind_param(
+            "sssssssssssssss", $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery );
         $stmt->execute();
         $result = $stmt->get_result();
         $clients = $result->fetch_all(MYSQLI_ASSOC);
@@ -171,17 +184,19 @@ if ($action === 'search') {
                 <td>{$sr}</td>
                 <td>{$fullName}</td>
                 <td>{$row['email']}</td>
-                <td>{$row['mobile1']}</td>
-                <td>{$row['mobile2']}</td> 
-                <td>{$row['company_name']}</td>
-                <td>{$row['company_type']}</td>
-                <td>{$row['company_website']}</td>
-                <td>{$row['designation']}</td>
-                <td>
-                    <span onclick='toggleStatus({$row['id']})' style='cursor:pointer'>
-                        {$statusText}
-                    </span>
+                <td>{$row['mobile1']}</td> 
+                  <td>
+                    " . (!empty($row['companies'])
+                ? "<span class='badge companies-listing text-white p-2'>" .
+                str_replace(
+                    ', ',
+                    "</span> <span class='badge companies-listing text-white p-2'>",
+                    htmlspecialchars($row['companies'])
+                ) .
+                "</span>"
+                : "<span class='text-muted'>—</span>") . "
                 </td>
+
                 <td>
                     <div class='action-wrapper'>
                         <button class='action-btn' onclick='toggleMenu(this)'>⋮</button>
