@@ -129,19 +129,18 @@ class Client
     public function create($data)
     {
         $stmt = $this->conn->prepare("
-            INSERT INTO clients ( client_uid, title, first_name, second_name, last_name, email, country_code, mobile1, mobile2 , landline ,  company_name, company_type, company_website,trn_no, tax_no, sms_notification, email_notification,  designation,   birth_date,  status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO clients ( client_uid, title, first_name, second_name, last_name, email,  mobile1, mobile2 , landline ,  company_name, company_type, company_website,trn_no, tax_no, sms_notification, email_notification,  designation,   birth_date,  status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         $stmt->bind_param(
-            "sssssssssssssssssssi",
+            "ssssssssssssssssssi",
             $data['client_uid'],
             $data['title'],
             $data['first_name'],
             $data['second_name'],
             $data['last_name'],
-            $data['email'],
-            $data['country_code'],
+            $data['email'], 
             $data['mobile1'],
             $data['mobile2'],
             $data['landline'],
@@ -175,18 +174,17 @@ class Client
         $stmt = $this->conn->prepare("
             UPDATE clients 
             SET title = ?, first_name = ?, second_name = ?, last_name = ?, 
-                email = ?, country_code = ?, mobile1 = ?, mobile2 = ?, landline = ?,    company_name = ?, company_type = ?, company_website = ? ,  trn_no = ?, tax_no = ?, sms_notification = ?, email_notification = ?, designation = ?, birth_date = ?, status = ?
+                email = ?,  mobile1 = ?, mobile2 = ?, landline = ?,    company_name = ?, company_type = ?, company_website = ? ,  trn_no = ?, tax_no = ?, sms_notification = ?, email_notification = ?, designation = ?, birth_date = ?, status = ?
             WHERE id = ?
         ");
 
         $stmt->bind_param(
-            "sssssssssssssssssssi",
+            "ssssssssssssssssssi",
             $data['title'],
             $data['first_name'],
             $data['second_name'],
             $data['last_name'],
-            $data['email'],
-            $data['country_code'],
+            $data['email'], 
             $data['mobile1'],
             $data['mobile2'],
             $data['landline'],
