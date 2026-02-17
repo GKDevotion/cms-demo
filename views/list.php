@@ -13,6 +13,13 @@ require_once 'classes/Client.php';
 $client = new Client($conn);
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $clientData = $client->getPaginated($page, 10);
+$totalRecords = $clientData['totalRecords'];
+$currentPage  = $clientData['currentPage'];
+$limit        = 10;
+$offset       = $clientData['offset'];
+
+$start = $totalRecords > 0 ? $offset + 1 : 0;
+$end   = min($offset + $limit, $totalRecords);
 
 $services = $client->getActiveCompanies();
 
@@ -34,7 +41,7 @@ $services = $client->getActiveCompanies();
             <i class="bi bi-search" aria-hidden="true"></i>
             Search Client
         </a>
-      
+           
     </div>
 
     <table>

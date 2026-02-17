@@ -140,7 +140,7 @@ class Client
             $data['first_name'],
             $data['second_name'],
             $data['last_name'],
-            $data['email'], 
+            $data['email'],
             $data['mobile1'],
             $data['mobile2'],
             $data['landline'],
@@ -184,7 +184,7 @@ class Client
             $data['first_name'],
             $data['second_name'],
             $data['last_name'],
-            $data['email'], 
+            $data['email'],
             $data['mobile1'],
             $data['mobile2'],
             $data['landline'],
@@ -550,7 +550,7 @@ class Client
         WHERE client_uid LIKE CONCAT(?, '%')
         ORDER BY client_uid DESC 
         LIMIT 1
-    ";
+        ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $today);
@@ -569,5 +569,17 @@ class Client
         $stmt->close();
 
         return $today . $nextSeq; // 260210001
+    }
+
+    public function getTotalCount()
+    {
+        $result = $this->conn->query("SELECT COUNT(*) as total FROM clients");
+
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return (int)$row['total'];
+        }
+
+        return 0;
     }
 }

@@ -21,6 +21,10 @@ if ($action === 'fetch') {
     $totalPages = $data['totalPages'];
     $offset = $data['offset'];
 
+    $totalRecords = $data['totalRecords'];
+    $startRecord = $totalRecords > 0 ? $offset + 1 : 0;
+    $endRecord   = min($offset + $limit, $totalRecords);
+
     $sr = $offset + 1;
 
     if (!empty($clients)) {
@@ -83,6 +87,14 @@ if ($action === 'fetch') {
 
     // Pagination
     echo "<tr><td colspan='12' class='text-center'>";
+    echo "<div style='display:flex; justify-content:space-between; align-items:center;'>";
+
+    // LEFT SIDE (Showing count)
+    echo "<div style='font-size:14px; color:#666;'>";
+    echo "Showing <strong>$startRecord</strong>–<strong>$endRecord</strong> of <strong>$totalRecords</strong> clients";
+    echo "</div>";
+
+    // RIGHT SIDE (Pagination links)
     echo "<div class='custom-pagination'>";
 
     $maxLinks = 5;
@@ -109,7 +121,8 @@ if ($action === 'fetch') {
         echo "<span class='page' onclick='loadClients(" . ($page + 1) . ")'>&raquo;</span>";
     }
 
-    echo "</div>";
+    echo "</div>"; // close pagination links
+    echo "</div>"; // close flex container
     echo "</td></tr>";
 }
 
@@ -162,7 +175,24 @@ if ($action === 'search') {
 
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
-            "ssssssssssssssss", $searchQuery, $searchQuery ,$searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery, $searchQuery );
+            "ssssssssssssssss",
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery,
+            $searchQuery
+        );
         $stmt->execute();
         $result = $stmt->get_result();
         $clients = $result->fetch_all(MYSQLI_ASSOC);
